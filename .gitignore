@@ -5,6 +5,10 @@
 /coverage/
 # Vendor
 /vendor/
+vendor
+*.iml
+.idea
+*.env
 # Logs
 /app/logs/*
 !/app/logs/README.md
