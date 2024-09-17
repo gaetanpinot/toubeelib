@@ -1,7 +1,7 @@
 <?php
 namespace toubeelib\core\dto;
 
-use toubeelib\core\domain\entities\praticien\Praticien;
+use toubeelib\core\domain\entities\patient\Patient;
 use toubeelib\core\dto\DTO;
 
 class PatientDTO extends DTO
@@ -17,13 +17,17 @@ class PatientDTO extends DTO
     protected string $traitant;
 
     public function __construct(Praticien $p)
-    {
-        $this->ID = $p->getID();
+    {   
+        if($numSecu != null){
+            $this->ID = $p->$numSecu;
+
+        }else{
+            $this->ID = $p->getID();
+        }
         $this->nom = $p->nom;
         $this->prenom = $p->prenom;
         $this->adresse = $p->adresse;
         $this->tel = $p->tel;
-        $this->numSecu = $p->numSecu;
         $this->dateNaissance = $p->dateNaissance;
         $this->traitant = $p->traitant;
     }
