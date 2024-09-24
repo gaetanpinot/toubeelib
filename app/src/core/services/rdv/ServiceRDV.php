@@ -37,10 +37,10 @@ class ServiceRDV implements ServiceRDVInterface
     }
 
     /*string $praticienID*/
-    public function supprimerRendezVous(string $id) : RdvDTO {
+    public function supprimerRendezVous(string $id) : void {
         try {
             $rdv = $this->rdvRepository->getRDVById($id);
-            $this->rdvRepository->delete($rdv);
+            $this->rdvRepository->delete($id);
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServiceRDVInvalidDataException('invalid RDV ID');
         } 

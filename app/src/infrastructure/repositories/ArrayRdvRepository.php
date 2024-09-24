@@ -33,5 +33,10 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         $this->rdvs[$id] = $rdv;
     }
 
+    public function delete(string $id): void{
+        unset($this->rdvs[$id]);
+    }
+
+
   
 }

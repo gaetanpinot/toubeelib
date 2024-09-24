@@ -15,9 +15,9 @@ use toubeelib\infrastructure\repositories\ArrayRdvRepository;
 class GetRdvId extends AbstractAction
 {
 
-    public function __invoke(ServerRequestInterface $rq , ResponseInterface $rs , array $args): ResponseInterface
+    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-$status=200;
+        $status = 200;
         try {
             $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
             $rdvs = $serviceRdv->getRDVById($args['id']);
@@ -37,12 +37,6 @@ $status=200;
                         "self" => [
                             "href" => "/rdvs/$rdvs->id/"
                         ],
-                        "modifier" => [
-                            "href" => "/rdvs/$rdvs->id/modifier/"
-                        ],
-                        "annuler" => [
-                            "href" => "/rdvs/$rdvs->id/annuler/"
-                        ],
                         "praticien" => [
                             "href" => "/praticiens/{$rdvs->praticien->id}"
                         ],
@@ -51,13 +45,13 @@ $status=200;
                         ]
                     ]
                 ];
-        }catch(ServiceRDVInvalidDataException $s){
-            $data=["erreur"=>"Erreur RDV invalide"];
-            $status=404;
+        } catch (ServiceRDVInvalidDataException $s) {
+            $data = ["erreur" => "Erreur RDV invalide"];
+            $status = 404;
         }
         $rs->getBody()->write(json_encode($data));
         return $rs
-            ->withHeader('Content-Type' , 'application/json')
+            ->withHeader('Content-Type', 'application/json')
             ->withStatus($status);
 
         // TODO: Implement __invoke() method.
