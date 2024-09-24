@@ -22,5 +22,12 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         $this->rdvs  = ['r1'=> $r1, 'r2'=>$r2, 'r3'=> $r3 ];
     }
 
+    public function getRDVbyID(string $id): RendezVous {
+        $rdv = $this->rdvs[$id] ??
+            throw new RepositoryEntityNotFoundException("RDV $id not found");
+
+        return $rdv;
+    }
+
   
 }

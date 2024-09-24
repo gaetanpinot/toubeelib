@@ -1,13 +1,13 @@
+
 networks:
   toubeelib.net:
     driver: bridge
-
 services:
 
   # service api.toubeelib : api pour la prise de rdv
   #
   api.toubeelib:
-    #  image: 'canals/php:8.3-cli'
+  #  image: 'canals/php:8.3-cli'
     build:
       context: build
       dockerfile: 8.3-cli.Dockerfile
@@ -33,9 +33,9 @@ services:
       - toubeelib.net
     volumes:
       - ./app/sql:/var/sql'
-      #
-      # service administration des bases sql
-      #
+  #
+  # service administration des bases sql
+  #
   adminer:
     image: adminer
     ports:
