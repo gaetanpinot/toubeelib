@@ -55,4 +55,14 @@ class ServiceRDV implements ServiceRDVInterface
     public function getListeDisponibilite(string $id) : array {
 
     }
+
+    /*string $praticienID*/
+    public function supprimerRendezVous(string $id) : RdvDTO {
+        try {
+            $rdv = $this->rdvRepository->getRDVById($id);
+            $this->rdvRepository->delete($rdv);
+        } catch(RepositoryEntityNotFoundException $e) {
+            throw new ServiceRDVInvalidDataException('invalid RDV ID');
+        } 
+    }
 }
