@@ -12,8 +12,8 @@ class RdvDTO extends DTO
     public \DateTimeImmutable $dateHeure;
     public PraticienDTO $praticien;
     public string $specialiteLabel;
-    public string $patientID;
-    //public string $consultationType;
+    public string $patientId;
+    public string $consultationType;
     public int $status;
 
 
@@ -32,8 +32,8 @@ class RdvDTO extends DTO
         $this->dateHeure = $r->dateHeure;
         $this->praticien = $praticienDTO;
         $this->specialiteLabel = $r->specialite;
-        $this->patientID = $r->patientID;
-        //$this->consultationType = $r->consultationType;
+        $this->patientId = $r->patientID;
+//        $this->consultationType = $r->consultationType;
         $this->status = $r->status;
     }
 
