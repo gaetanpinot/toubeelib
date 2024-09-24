@@ -2,6 +2,7 @@
 
 namespace toubeelib\core\services\rdv;
 
+use DateInterval;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
@@ -15,6 +16,8 @@ class ServiceRDV implements ServiceRDVInterface
 {
     private RDVRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
+
+    private DateInterval $interval = DateInterval::createFromDateString('15 minutes');
 
     public function __construct(ServicePraticien $servicePraticien, RdvRepositoryInterface $rdvRepository) {
         $this->rdvRepository = $rdvRepository;
@@ -31,9 +34,26 @@ class ServiceRDV implements ServiceRDVInterface
     }
 
     /*string $praticienID, $patientID, string $specialite, \DateTimeImmutable $dateHeure*/
-    public function creerRendezvous(string $praticienID, string $patientID, string $specialite, \DateTimeImmutable $dateHeure) : RdvDTO {
+    public function creerRendezvous(string $id, string $praticienID, string $patientID, string $specialite, \DateTimeImmutable $dateHeure) : RdvDTO {
         $rdv = new RendezVous($praticienID, $patientID, $specialite, $dateHeure);
-        $this->rdvRepository->save($rdv);
+        $rdv->setID($id);
+        try {
+            $praticien = $this->servicePraticien->getPraticienById($praticienID);
+            if ($praticien->specialite_label != $this->servicePraticien->getSpecialiteById($specialite)->label) {
+                throw new \Exception($praticien->specialite_label."=!".$specialite);
+            }
+            /*if (!in_array($this->getListeDisponibilite($praticienID),$dateHeure)) {
+                throw new \Exception("Praticien indisponible"); 
+            }*/
+        } catch(\Exception $e) {
+            throw new \Exception("Création de rdv impossible : " .$e->getMessage());
+        }
+        $this->rdvRepository->addRDV($id, $rdv);
+        return $rdv->toDTO($praticien);
+    }
+
+    public function getListeDisponibilite(string $id) : array {
+
     }
 
     /*string $praticienID*/

@@ -17,15 +17,6 @@ class RdvDTO extends DTO
     public int $status;
 
 
-    /**
-     * protected string $id;
-    * protected \DateTimeImmutable $dateHeure;
-    * protected string $praticienID;
-    * protected string $specialite = null; // version simplifiée : une seule spécialité
-    * protected string $patientID; 
-     *protected int $status;
-     */
-
     public function __construct(RendezVous $r, PraticienDTO $praticienDTO)
     {
         $this->id = $r->getID();
