@@ -25,7 +25,6 @@ class ServiceAddRdv implements ServiceRdvInterface
 
     public function createRdv(InputPraticienDTO $p): PraticienDTO
     {
-        // TODO : valider les données et créer l'entité
         return new PraticienDTO($praticien);
 
 
