@@ -1,0 +1,22 @@
+.idea/
+# IDE
+.vscode/
+.DS_STORE
+/coverage/
+# Vendor
+/vendor/
+vendor
+*.iml
+.idea
+*.env
+# Logs
+/app/logs/*
+!/app/logs/README.md
+# Cache
+/var/cache/*
+.phpunit.result.cache
+cache.properties
+.php_cs.cache
+# Composer
+composer.phar
+composer.lock
