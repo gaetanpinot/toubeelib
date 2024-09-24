@@ -29,5 +29,9 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         return $rdv;
     }
 
+    public function addRdv(string $id, RendezVous $rdv): void {
+        $this->rdvs[$id] = $rdv;
+    }
+
   
 }
