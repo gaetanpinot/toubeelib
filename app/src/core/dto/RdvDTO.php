@@ -3,6 +3,7 @@
 namespace toubeelib\core\dto;
 
 use toubeelib\core\domain\entities\rdv\RendezVous;
+use toubeelib\core\dto\PraticienDTO;
 use toubeelib\core\dto\DTO;
 
 class RdvDTO extends DTO
@@ -11,7 +12,7 @@ class RdvDTO extends DTO
     protected \DateTimeImmutable $dateHeure;
     protected PraticienDTO $praticien;
     protected string $specialiteLabel; 
-    protected string $patientID; 
+    protected string $patientID;
     //protected string $consultationType;
     protected int $status;
 

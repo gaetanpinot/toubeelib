@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "toubeelib",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

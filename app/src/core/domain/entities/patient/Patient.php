@@ -5,7 +5,7 @@ namespace toubeelib\core\domain\entities\patient;
 use toubeelib\core\domain\entities\Entity;
 use toubeelib\core\dto\PatientDTO;
 
-class Praticien extends Entity
+class Patient extends Entity
 {
     protected string $nom;
     protected string $prenom;

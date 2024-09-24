@@ -36,8 +36,8 @@ class RendezVous extends Entity
         $this->status = 0;
     }
 
-    public function toDTO(praticienDTO $praticienDTO): RdvDTO
+    public function toDTO(PraticienDTO $praticienDTO): RdvDTO
     {
-        return new RdvDTO(r: $this, $praticienDTO);
+        return new RdvDTO( $this, $praticienDTO);
     }
 }
