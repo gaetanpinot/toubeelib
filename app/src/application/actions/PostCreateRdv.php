@@ -2,6 +2,7 @@
 
 namespace toubeelib\application\actions;
 
+use _PHPStan_9815bbba4\Nette\Neon\Exception;
 use DateTimeImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,10 +36,16 @@ class PostCreateRdv extends AbstractAction
             try {
                 $dateHeure= DateTimeImmutable::createFromFormat('Y-m-d H:i',$_POST["dateHeure"]);
                 $dtoRendezVousCree=$serviceRdv->creerRendezvous($_POST['praticienId'], $_POST['patientId'], $_POST['specialite'], $dateHeure);
+
                 $data=['rendez_vous'=>['id'=>$dtoRendezVousCree->id]];
-            }catch (ServiceRDVInvalidDataException $e ){
-                $status=400;
-                $data=['erreur'=>$e->getMessage()];
+                $rs=$rs->withAddedHeader("Location","/rdvs/".$dtoRendezVousCree->id);
+                $status=201;
+            }catch (ServiceRDVInvalidDataException $e ) {
+                $status = 400;
+                $data = ['erreur' => $e->getMessage()];
+            }catch(\Exception $e){
+                $status=500;
+                $data=['erreur'=>'Erreur serveur'];
             }
         }
         $rs->getBody()->write(json_encode($data));
