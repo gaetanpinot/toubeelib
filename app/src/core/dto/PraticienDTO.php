@@ -7,12 +7,12 @@ use toubeelib\core\dto\DTO;
 
 class PraticienDTO extends DTO
 {
-    protected string $ID;
-    protected string $nom;
-    protected string $prenom;
-    protected string $adresse;
-    protected string $tel;
-    protected string $specialite_label;
+    public string $ID;
+    public string $nom;
+    public string $prenom;
+    public string $adresse;
+    public string $tel;
+    public string $specialite_label;
 
     public function __construct(Praticien $p)
     {

@@ -8,13 +8,13 @@ use toubeelib\core\dto\DTO;
 
 class RdvDTO extends DTO
 {
-    protected string $id;
-    protected \DateTimeImmutable $dateHeure;
-    protected PraticienDTO $praticien;
-    protected string $specialiteLabel; 
-    protected string $patientID;
-    //protected string $consultationType;
-    protected int $status;
+    public string $id;
+    public \DateTimeImmutable $dateHeure;
+    public PraticienDTO $praticien;
+    public string $specialiteLabel;
+    public string $patientID;
+    //public string $consultationType;
+    public int $status;
 
 
     /**

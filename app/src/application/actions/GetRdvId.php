@@ -20,7 +20,7 @@ class GetRdvId extends AbstractAction
         $rdvs = $serviceRdv->getRDVById($args['id']);
 
 
-        $data = json_encode($rdvs,JSON_THROW_ON_ERROR);
+        $data = $rdvs->toJSON();
         $rs->getBody()->write($data);
         return $rs
             ->withHeader('Content-Type', 'application/json')
