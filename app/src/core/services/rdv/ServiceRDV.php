@@ -12,7 +12,7 @@ use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
 
 class ServiceRDV implements ServiceRDVInterface
-    
+
 {
     private RDVRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
@@ -21,28 +21,37 @@ class ServiceRDV implements ServiceRDVInterface
     const HDEBUT = [9,00];
     const HFIN = [17,30];
 
-    public function __construct(ServicePraticien $servicePraticien, RdvRepositoryInterface $rdvRepository) {
+    public function __construct(ServicePraticien $servicePraticien, RdvRepositoryInterface $rdvRepository)
+    {
         $this->rdvRepository = $rdvRepository;
         $this->servicePraticien = $servicePraticien;
     }
-    public function getRDVById(string $id): RdvDTO {
+
+    public function getRDVById(string $id): RdvDTO
+    {
         try {
             $rdv = $this->rdvRepository->getRDVById($id);
-        } catch(RepositoryEntityNotFoundException $e) {
+        } catch (RepositoryEntityNotFoundException $e) {
             throw new ServiceRDVInvalidDataException('invalid RDV ID');
-        } 
-            $praticien = $this->servicePraticien->getPraticienById($rdv->getPracticienId());
-            return $rdv->toDTO($praticien);
+        }
+        $praticien = $this->servicePraticien->getPraticienById($rdv->getPracticienId());
+        return $rdv->toDTO($praticien);
     }
 
     /*string $praticienID, $patientID, string $specialite, \DateTimeImmutable $dateHeure*/
-    public function creerRendezvous(string $id, string $praticienID, string $patientID, string $specialite, \DateTimeImmutable $dateHeure) : RdvDTO {
-        $rdv = new RendezVous($praticienID, $patientID, $specialite, $dateHeure);
+    public function creerRendezvous(string $praticienId, string $patientId, string $specialite, \DateTimeImmutable $dateHeure): RdvDTO
+    {
+        $rdv = new RendezVous($praticienId, $patientId, $specialite, $dateHeure);
+
+        // ! temporaire a remplacer par uuid
+        $id = 'r' . random_int(0, 1000000000);
         $rdv->setID($id);
+        // ! temporaire
+
         try {
-            $praticien = $this->servicePraticien->getPraticienById($praticienID);
+            $praticien = $this->servicePraticien->getPraticienById($praticienId);
             if ($praticien->specialite_label != $this->servicePraticien->getSpecialiteById($specialite)->label) {
-                throw new \Exception($praticien->specialite_label."=!".$specialite);
+                throw new \Exception($praticien->specialite_label . "=!" . $specialite);
             }
             
             if (!in_array($dateHeure, $this->getListeDisponibilite($praticienID))) {
@@ -82,12 +91,13 @@ class ServiceRDV implements ServiceRDVInterface
     }
 
     /*string $praticienID*/
-    public function supprimerRendezVous(string $id) : RdvDTO {
+    public function supprimerRendezVous(string $id): void
+    {
         try {
             $rdv = $this->rdvRepository->getRDVById($id);
-            $this->rdvRepository->delete($rdv);
-        } catch(RepositoryEntityNotFoundException $e) {
+            $this->rdvRepository->delete($id);
+        } catch (RepositoryEntityNotFoundException $e) {
             throw new ServiceRDVInvalidDataException('invalid RDV ID');
-        } 
+        }
     }
 }
