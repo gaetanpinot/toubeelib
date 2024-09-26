@@ -50,11 +50,11 @@ class ServiceRDV implements ServiceRDVInterface
 
         try {
             $praticien = $this->servicePraticien->getPraticienById($praticienId);
-            if ($praticien->specialite_label != $this->servicePraticien->getSpecialiteById($specialite)->label) {
-                throw new \Exception($praticien->specialite_label . "=!" . $specialite);
+            if ($praticien->specialiteLabel != $this->servicePraticien->getSpecialiteById($specialite)->label) {
+                throw new \Exception($praticien->specialiteLabel . "=!" . $specialite);
             }
             
-            if (!in_array($dateHeure, $this->getListeDisponibilite($praticienID))) {
+            if (!in_array($dateHeure, $this->getListeDisponibilite($praticienId))) {
                 throw new \Exception("Praticien indisponible"); 
             }
         } catch(\Exception $e) {
@@ -80,7 +80,6 @@ class ServiceRDV implements ServiceRDVInterface
                 if (!in_array($startDate->format('Y-m-d H:i'), $listeRDVHorraires)) {
                     
                     $results[] = $startDate;
-                } else {
                 }
                 $startDate = $startDate->add(new DateInterval("PT30M"));
             }

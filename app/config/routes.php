@@ -11,8 +11,10 @@ return function (\Slim\App $app): \Slim\App {
     $app->post('/rdvs[/]', \toubeelib\application\actions\PostCreateRdv::class)->setName('createRdv');
     $app->get('/test[/]', \toubeelib\application\actions\test::class);
 
-    $app->get('/rdvs/{id}[/]', \toubeelib\application\actions\GetRdvId::class)->setName('getRdvId');
+    $app->get('/rdvs/{id}[/]', \toubeelib\application\actions\GetRdvId::class)->setName('getRdv');
     $app->delete('/rdvs/{id}[/]', \toubeelib\application\actions\DeleteRdvId::class)->setName('deleteRdvId');
+    $app->get("/patients/{id}[/]",function(){})->setName('getPatient');
+    $app->get("/praticiens/{id}[/]",function(){})->setName('getPraticien');
 
 
     return $app;

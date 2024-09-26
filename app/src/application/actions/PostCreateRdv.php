@@ -51,8 +51,10 @@ class PostCreateRdv extends AbstractAction
 
             $data = ['rendez_vous' => ['id' => $dtoRendezVousCree->id]];
 
+            // route parser
             $routeParser = RouteContext::fromRequest($rq)->getRouteParser();
-            $rs = $rs->withAddedHeader("Location", $routeParser->urlFor("getRdvId", ["id" => $dtoRendezVousCree->id]));
+            // entrée dans le header avec le nom Location et pour valeur la route vers le rdv crée
+            $rs = $rs->withAddedHeader("Location", $routeParser->urlFor("getRdv", ["id" => $dtoRendezVousCree->id]));
 
             // TODO renvoyer dto to json
             $status = 201;

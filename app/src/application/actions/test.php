@@ -4,6 +4,7 @@ namespace toubeelib\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Routing\RouteContext;
 use toubeelib\application\actions\AbstractAction;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\services\praticien\ServicePraticien;
@@ -22,14 +23,22 @@ class test extends AbstractAction
         try {
             $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
             $rdvs = $serviceRdv->getRDVById('r1');
-            $rs=JsonRenderer::render($rs,200,$rdvs);
+            $routeParser = RouteContext::fromRequest($rq)->getRouteParser();
+            $data = ["rendezVous" => $rdvs,
+                "links" => [
+                    "self" => $routeParser->urlFor("getRdv", ['id' => $rdvs->id]),
+                    "praticien" => $routeParser->urlFor("getPraticien",['id'=>$rdvs->praticien->id]),
+                    "patient"=>$routeParser->urlFor("getPatient",['id'=>$rdvs->patientId])
+                ]
+            ];
+            $rs = JsonRenderer::render($rs, 200, $data);
 
+//            var_dump(get_object_vars($rdvs));
         } catch (ServiceRDVInvalidDataException $s) {
             $data = ["erreur" => "Erreur RDV invalide"];
             $status = 404;
         }
         return $rs;
 
-        // TODO: Implement __invoke() method.       // TODO: Implement __invoke() method.
     }
 }
