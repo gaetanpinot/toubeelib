@@ -4,8 +4,16 @@ namespace toubeelib\application\actions;
 
 use _PHPStan_9815bbba4\Nette\Neon\Exception;
 use DateTimeImmutable;
+use MongoDB\Driver\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Respect\Validation\Exceptions\NestedValidationException;
+use Respect\Validation\Validator;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpInternalServerErrorException;
+use Slim\Factory\AppFactory;
+use Slim\Routing\RouteContext;
+use Slim\Routing\RouteParser;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\rdv\ServiceRDV;
@@ -22,31 +30,37 @@ class PostCreateRdv extends AbstractAction
     {
 
         $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
+        $jsonRdv = $rq->getParsedBody();
 
         $status = 200;
         $champs = ['praticienId', 'patientId', 'specialite', 'dateHeure'];
-        foreach ($champs as $c) {
-            if (!isset($_POST[$c])) {
-                $status = 400;
-                $data = ["erreur" => "donnée $c manquante"];
-                break;
-            }
-        }
-        if ($status == 200) {
-            try {
-                $dateHeure= DateTimeImmutable::createFromFormat('Y-m-d H:i',$_POST["dateHeure"]);
-                $dtoRendezVousCree=$serviceRdv->creerRendezvous($_POST['praticienId'], $_POST['patientId'], $_POST['specialite'], $dateHeure);
 
-                $data=['rendez_vous'=>['id'=>$dtoRendezVousCree->id]];
-                $rs=$rs->withAddedHeader("Location","/rdvs/".$dtoRendezVousCree->id);
-                $status=201;
-            }catch (ServiceRDVInvalidDataException $e ) {
-                $status = 400;
-                $data = ['erreur' => $e->getMessage()];
-            }catch(\Exception $e){
-                $status=500;
-                $data=['erreur'=>'Erreur serveur'];
-            }
+        $rdvInputValidator = Validator::key('praticienId', Validator::stringType()->notEmpty())
+            ->key('patientId', Validator::stringType()->notEmpty())
+            ->key('specialite', Validator::stringType()->notEmpty())
+            ->key('dateHeure', Validator::dateTime("Y-m-d H:i")->notEmpty());
+
+        try {
+            $rdvInputValidator->assert($jsonRdv);
+        } catch (NestedValidationException $e) {
+            throw new HttpBadRequestException($rq, $e->getMessage());
+        }
+        try {
+            $dateHeure = DateTimeImmutable::createFromFormat('Y-m-d H:i', $jsonRdv["dateHeure"]);
+            $dtoRendezVousCree = $serviceRdv->creerRendezvous($jsonRdv['praticienId'], $jsonRdv['patientId'], $jsonRdv['specialite'], $dateHeure);
+
+            $data = ['rendez_vous' => ['id' => $dtoRendezVousCree->id]];
+
+            $routeParser = RouteContext::fromRequest($rq)->getRouteParser();
+            $rs = $rs->withAddedHeader("Location", $routeParser->urlFor("getRdvId", ["id" => $dtoRendezVousCree->id]));
+
+            // TODO renvoyer dto to json
+            $status = 201;
+        } catch (ServiceRDVInvalidDataException $e) {
+            throw new HttpBadRequestException($rq, $e->getMessage());
+        } catch (\Exception $e) {
+            throw new HttpInternalServerErrorException($rq, $e->getMessage());
+//            throw new HttpInternalServerErrorException($rq, "Erreur serveur");
         }
         $rs->getBody()->write(json_encode($data));
         return $rs

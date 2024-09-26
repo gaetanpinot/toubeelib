@@ -11,6 +11,7 @@ use toubeelib\core\services\rdv\ServiceRDV;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
 use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 use toubeelib\infrastructure\repositories\ArrayRdvRepository;
+use function _PHPStan_9815bbba4\React\Async\waterfall;
 
 class test extends AbstractAction
 {

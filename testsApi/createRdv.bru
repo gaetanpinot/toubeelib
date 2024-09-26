@@ -6,17 +6,15 @@ meta {
 
 post {
   url: http://localhost:6080/rdvs
-  body: multipartForm
+  body: json
   auth: none
 }
 
 body:json {
-  {"praticienId":"p1"}
-}
-
-body:multipart-form {
-  praticienId: p1
-  patientId: pa1
-  specialite: A
-  dateHeure: 1998-08-21 23:30
+  {
+    "praticienId": "p1",
+    "patientId" : "pa1",
+    "specialite" : "A",
+    "dateHeure" : "1998-08-21 23:59"
+  }  
 }
