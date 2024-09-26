@@ -1,7 +1,10 @@
 .idea/
 # IDE
 .vscode/
+app/.DS_STORE
 .DS_STORE
+.DS_Store
+app/.DS_Store
 /coverage/
 # Vendor
 /vendor/
@@ -12,6 +15,7 @@ vendor
 # Logs
 /app/logs/*
 !/app/logs/README.md
+/app/vendor
 # Cache
 /var/cache/*
 .phpunit.result.cache
