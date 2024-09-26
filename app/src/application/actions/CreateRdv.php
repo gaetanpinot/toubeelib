@@ -17,14 +17,13 @@ class CreateRDV extends AbstractAction
     {
 
         $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
-        $rdvs = $serviceRdv->creerRendezvous('r5', 'p1', 'pa1', 'A', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:00'));
-
+        $rdvs = $serviceRdv->creerRendezvous('r5', 'p1', 'pa1', 'A', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-27 09:00'));
+        
 
         $data = $rdvs->toJSON();
         $rs->getBody()->write($data);
         return $rs
             ->withHeader('Content-Type', 'application/json')
             ->withStatus(200);
-
     }
 }
