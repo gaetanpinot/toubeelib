@@ -61,7 +61,7 @@ class ServiceRDV implements ServiceRDVInterface
                 throw new \Exception("Praticien indisponible");
             }
         } catch (\Exception $e) {
-            throw new \Exception("Création de rdv impossible : " . $e->getMessage());
+            throw new ServiceRDVInvalidDataException("Création de rdv impossible : " . $e->getMessage());
         }
         $this->rdvRepository->addRDV($id, $rdv);
         return $rdv->toDTO($praticien);

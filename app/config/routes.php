@@ -13,8 +13,13 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->get('/rdvs/{id}[/]', \toubeelib\application\actions\GetRdvId::class)->setName('getRdv');
     $app->delete('/rdvs/{id}[/]', \toubeelib\application\actions\DeleteRdvId::class)->setName('deleteRdvId');
-    $app->get("/patients/{id}[/]",function(){})->setName('getPatient');
-    $app->get("/praticiens/{id}[/]",function(){})->setName('getPraticien');
+    // TODO get patients
+    $app->get("/patients/{id}[/]", function () {
+    })->setName('getPatient');
+    // TODO get praticiens
+    $app->get("/praticiens/{id}[/]", function () {
+    })->setName('getPraticien');
+    $app->patch('/rdvs/{id}[/]', \toubeelib\application\actions\PatchRdv::class)->setName('patchRdv');
 
 
     return $app;
