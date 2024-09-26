@@ -4,6 +4,7 @@ namespace toubeelib\application\actions;
 
 use _PHPStan_9815bbba4\Nette\Neon\Exception;
 use DateTimeImmutable;
+use Error;
 use MongoDB\Driver\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -14,6 +15,8 @@ use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteContext;
 use Slim\Routing\RouteParser;
+use toubeelib\application\renderer\JsonRenderer;
+use toubeelib\core\dto\InputRdvDto;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\rdv\ServiceRDV;
@@ -41,35 +44,32 @@ class PostCreateRdv extends AbstractAction
             ->key('dateHeure', Validator::dateTime("Y-m-d H:i")->notEmpty());
 
         try {
+            //validation
             $rdvInputValidator->assert($jsonRdv);
-        } catch (NestedValidationException $e) {
-            throw new HttpBadRequestException($rq, $e->getMessage());
-        }
-        try {
+            //formatage
             $dateHeure = DateTimeImmutable::createFromFormat('Y-m-d H:i', $jsonRdv["dateHeure"]);
-            $dtoRendezVousCree = $serviceRdv->creerRendezvous($jsonRdv['praticienId'], $jsonRdv['patientId'], $jsonRdv['specialite'], $dateHeure);
+            $inputRdvDto = new InputRdvDto($jsonRdv['praticienId'], $jsonRdv['patientId'], $jsonRdv['specialite'], $dateHeure);
+            $dtoRendezVousCree = $serviceRdv->creerRendezvous($inputRdvDto);
 
-            $data = ['rendez_vous' => ['id' => $dtoRendezVousCree->id]];
 
             // route parser
             $routeParser = RouteContext::fromRequest($rq)->getRouteParser();
+            $rs = JsonRenderer::render($rs, 201, GetRdvId::ajouterLiensRdv($dtoRendezVousCree,$rq));
             // entrée dans le header avec le nom Location et pour valeur la route vers le rdv crée
             $rs = $rs->withAddedHeader("Location", $routeParser->urlFor("getRdv", ["id" => $dtoRendezVousCree->id]));
 
-            // TODO renvoyer dto to json
-            $status = 201;
+            return $rs;
+        } catch (NestedValidationException $e) {
+            throw new HttpBadRequestException($rq, $e->getMessage());
         } catch (ServiceRDVInvalidDataException $e) {
             throw new HttpBadRequestException($rq, $e->getMessage());
         } catch (\Exception $e) {
             throw new HttpInternalServerErrorException($rq, $e->getMessage());
 //            throw new HttpInternalServerErrorException($rq, "Erreur serveur");
+        } catch (Error $e) {
+            echo $e->getTraceAsString();
         }
-        $rs->getBody()->write(json_encode($data));
-        return $rs
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus($status);
 
-        //  creerRendezvous(string $id, string $praticienID, string $patientID, string $specialite, \DateTimeImmutable $dateHeure) : RdvDTO {
 
     }
 }

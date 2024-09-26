@@ -3,7 +3,9 @@
 namespace toubeelib\core\services\rdv;
 
 use DateInterval;
+use Error;
 use toubeelib\core\domain\entities\rdv\RendezVous;
+use toubeelib\core\dto\InputRdvDto;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\services\praticien\ServicePraticien;
@@ -17,9 +19,9 @@ class ServiceRDV implements ServiceRDVInterface
     private RDVRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
 
-    const INTERVAL =  30; 
-    const HDEBUT = [9,00];
-    const HFIN = [17,30];
+    const INTERVAL = 30;
+    const HDEBUT = [9, 00];
+    const HFIN = [17, 30];
 
     public function __construct(ServicePraticien $servicePraticien, RdvRepositoryInterface $rdvRepository)
     {
@@ -39,54 +41,56 @@ class ServiceRDV implements ServiceRDVInterface
     }
 
     /*string $praticienID, $patientID, string $specialite, \DateTimeImmutable $dateHeure*/
-    public function creerRendezvous(string $praticienId, string $patientId, string $specialite, \DateTimeImmutable $dateHeure): RdvDTO
+    public function creerRendezvous(InputRdvDto $inputRdvDto): RdvDTO
     {
-        $rdv = new RendezVous($praticienId, $patientId, $specialite, $dateHeure);
+        $rdv = RendezVous::fromInputDto($inputRdvDto);
 
-        // ! temporaire a remplacer par uuid
+        // ! temporaire
+        // TODO a remplacer par uuid
         $id = 'r' . random_int(0, 1000000000);
         $rdv->setID($id);
         // ! temporaire
 
         try {
-            $praticien = $this->servicePraticien->getPraticienById($praticienId);
-            if ($praticien->specialiteLabel != $this->servicePraticien->getSpecialiteById($specialite)->label) {
-                throw new \Exception($praticien->specialiteLabel . "=!" . $specialite);
+            $praticien = $this->servicePraticien->getPraticienById($rdv->getPraticienID());
+            if ($praticien->specialiteLabel != $this->servicePraticien->getSpecialiteById($rdv->getSpecialite())->label) {
+                throw new \Exception($praticien->specialiteLabel . "=!" . $rdv->getSpecialite());
             }
-            
-            if (!in_array($dateHeure, $this->getListeDisponibilite($praticienId))) {
-                throw new \Exception("Praticien indisponible"); 
+
+            if (!in_array($rdv->getDateHeure(), $this->getListeDisponibilite($rdv->getPraticienID()))) {
+                throw new \Exception("Praticien indisponible");
             }
-        } catch(\Exception $e) {
-            throw new \Exception("Création de rdv impossible : " .$e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception("Création de rdv impossible : " . $e->getMessage());
         }
         $this->rdvRepository->addRDV($id, $rdv);
         return $rdv->toDTO($praticien);
     }
 
-    public function getListeDisponibilite(string $idPraticien) : array {
+    public function getListeDisponibilite(string $idPraticien): array
+    {
         $results = [];
         $listeRDV = $this->rdvRepository->getRDVByPraticien($idPraticien);
-        $listeRDVHorraires = array_map( function($rdv) {
+        $listeRDVHorraires = array_map(function ($rdv) {
             return $rdv->dateHeure->format('Y-m-d H:i');
         }, $listeRDV);
         $startDate = new \DateTimeImmutable("now");
         $startDate = $startDate->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
         $endDate = $startDate->add(new DateInterval("P7D"))->setTime(ServiceRDV::HFIN[0], ServiceRDV::HFIN[1]);
 
-        while($startDate->diff($endDate)->format('%d') > 0) {
-            while ($startDate->format('U')%86400 <= ServiceRDV::HFIN[0]*3600+ServiceRDV::HFIN[1]*60) {
-                
+        while ($startDate->diff($endDate)->format('%d') > 0) {
+            while ($startDate->format('U') % 86400 <= ServiceRDV::HFIN[0] * 3600 + ServiceRDV::HFIN[1] * 60) {
+
                 if (!in_array($startDate->format('Y-m-d H:i'), $listeRDVHorraires)) {
-                    
+
                     $results[] = $startDate;
                 }
                 $startDate = $startDate->add(new DateInterval("PT30M"));
             }
             $startDate = $startDate->add(new DateInterval('P1D'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
         }
-        
-    return $results;
+
+        return $results;
     }
 
     /*string $praticienID*/

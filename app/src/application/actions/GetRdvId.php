@@ -11,6 +11,7 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Routing\RouteContext;
 use toubeelib\application\actions\AbstractAction;
 use toubeelib\application\renderer\JsonRenderer;
+use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\rdv\ServiceRDV;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
@@ -20,6 +21,16 @@ use toubeelib\infrastructure\repositories\ArrayRdvRepository;
 class GetRdvId extends AbstractAction
 {
 
+    public static function ajouterLiensRdv(RdvDTO $rdv, ServerRequestInterface $rq){
+        $routeParser = RouteContext::fromRequest($rq)->getRouteParser();
+        return ["rendezVous" => $rdv,
+            "links" => [
+                "self" => $routeParser->urlFor("getRdv", ['id' => $rdv->id]),
+                "praticien" => $routeParser->urlFor("getPraticien", ['id' => $rdv->praticien->id]),
+                "patient" => $routeParser->urlFor("getPatient", ['id' => $rdv->patientId])
+            ]
+        ];
+    }
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         $status = 200;
@@ -27,14 +38,7 @@ class GetRdvId extends AbstractAction
             $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
             $rdvs = $serviceRdv->getRDVById($args['id']);
 
-            $routeParser = RouteContext::fromRequest($rq)->getRouteParser();
-            $data = ["rendezVous" => $rdvs,
-                "links" => [
-                    "self" => $routeParser->urlFor("getRdv", ['id' => $rdvs->id]),
-                    "praticien" => $routeParser->urlFor("getPraticien", ['id' => $rdvs->praticien->id]),
-                    "patient" => $routeParser->urlFor("getPatient", ['id' => $rdvs->patientId])
-                ]
-            ];
+            $data=GetRdvId::ajouterLiensRdv($rdvs,$rq);
             $rs = JsonRenderer::render($rs, 200, $data);
 
 
