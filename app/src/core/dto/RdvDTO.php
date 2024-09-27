@@ -29,4 +29,13 @@ class RdvDTO extends DTO
     }
 
 
+    public function jsonSerialize(): array
+    {
+        $retour= get_object_vars($this);
+        unset($retour['businessValidator']);
+        unset($retour['status']);
+        $retour['dateHeure']=$retour['dateHeure']->format('Y-m-d H:i:s');
+        return $retour;
+    }
+
 }

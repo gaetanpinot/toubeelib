@@ -29,6 +29,12 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         return $rdv;
     }
 
+    public function getRDVByPraticien(string $id) : array {
+        return array_filter($this->rdvs, function($rdv) use($id) {
+            return $rdv->praticienID === $id;
+        });
+    }
+
     public function addRdv(string $id, RendezVous $rdv): void {
         $this->rdvs[$id] = $rdv;
     }

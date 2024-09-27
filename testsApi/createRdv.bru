@@ -1,0 +1,20 @@
+meta {
+  name: createRdv
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:6080/rdvs
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "praticienId": "p1",
+    "patientId" : "pa1",
+    "specialite" : "A",
+    "dateHeure" : "2024-09-27 13:00"
+  }  
+}
