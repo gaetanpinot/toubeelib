@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use \toubeelib\application\actions\GetDisposPraticien;
 
 return function (\Slim\App $app): \Slim\App {
 
@@ -20,6 +19,10 @@ return function (\Slim\App $app): \Slim\App {
     $app->get("/praticiens/{id}[/]", function () {
     })->setName('getPraticien');
     $app->patch('/rdvs/{id}[/]', \toubeelib\application\actions\PatchRdv::class)->setName('patchRdv');
+
+    $app->get('/praticiens/{id}/dispos[/]', GetDisposPraticien::class)->setName('disposPraticien');
+
+    
 
 
     return $app;

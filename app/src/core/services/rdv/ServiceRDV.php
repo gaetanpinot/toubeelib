@@ -46,7 +46,7 @@ class ServiceRDV implements ServiceRDVInterface
         $rdv = RendezVous::fromInputDto($inputRdvDto);
 
         // ! temporaire
-        // TODO a remplacer par uuid
+        // TODO:  a remplacer par uuid
         $id = 'r' . random_int(0, 1000000000);
         $rdv->setId($id);
         // ! temporaire
@@ -63,14 +63,15 @@ class ServiceRDV implements ServiceRDVInterface
         } catch (\Exception $e) {
             throw new ServiceRDVInvalidDataException("Création de rdv impossible : " . $e->getMessage());
         }
-        $this->rdvRepository->addRDV($id, $rdv);
+        $this->rdvRepository->addRdv($id, $rdv);
         return $rdv->toDTO($praticien);
     }
 
+    // TODO: transferer methode a ServicePraticien
     public function getListeDisponibilite(string $idPraticien): array
     {
         $results = [];
-        $listeRDV = $this->rdvRepository->getRDVByPraticien($idPraticien);
+        $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
         $listeRDVHorraires = array_map(function ($rdv) {
             return $rdv->dateHeure->format('Y-m-d H:i');
         }, $listeRDV);

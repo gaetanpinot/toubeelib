@@ -19,7 +19,7 @@ class RdvDTO extends DTO
 
     public function __construct(RendezVous $r, PraticienDTO $praticienDTO)
     {
-        $this->id = $r->getID();
+        $this->id = $r->getId();
         $this->dateHeure = $r->dateHeure;
         $this->praticien = $praticienDTO;
         $this->specialiteLabel = $r->specialite;
