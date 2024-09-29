@@ -5,7 +5,6 @@ namespace toubeelib\application\actions;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Exceptions\NestedValidationException;
-use Respect\Validation\Rules\Json;
 use Respect\Validation\Validator;
 use Slim\Exception\HttpBadRequestException;
 use toubeelib\application\actions\AbstractAction;
@@ -19,13 +18,12 @@ use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 class GetDisposPraticien extends AbstractAction{
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $data =$rq->getParsedBody();
         $praticienValidator=Validator::key('id',Validator::stringType()->notEmpty());
 
         try{
-            $praticienValidator->assert($data);
+            $praticienValidator->assert($args);
             $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
-            $dispos=$serviceRdv->getListeDisponibilite($data['id']);
+            $dispos=$serviceRdv->getListeDisponibilite($args['id']);
             for($i=0; $i<count($dispos);$i++){
                 $dispos[$i]=$dispos[$i]->format('Y-m-d H:i:s');
             }

@@ -24,6 +24,7 @@ class PatchRdv extends AbstractAction
                 $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
 
         $data=$rq->getParsedBody();
+        $data['id']=$args['id'];
 
         //validation de l'existance de id, idpraticien, specialite, dateHeure
         $rdvInputValidator = Validator::key('id',Validator::stringType()->notEmpty())
