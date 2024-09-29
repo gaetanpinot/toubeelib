@@ -22,14 +22,14 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         $this->rdvs  = ['r1'=> $r1, 'r2'=>$r2, 'r3'=> $r3 ];
     }
 
-    public function getRDVbyID(string $id): RendezVous {
+    public function getRdvById(string $id): RendezVous {
         $rdv = $this->rdvs[$id] ??
             throw new RepositoryEntityNotFoundException("RDV $id not found");
 
         return $rdv;
     }
 
-    public function getRDVByPraticien(string $id) : array {
+    public function getRdvByPraticien(string $id) : array {
         return array_filter($this->rdvs, function($rdv) use($id) {
             return $rdv->praticienID === $id;
         });
@@ -38,6 +38,7 @@ class ArrayRdvRepository implements RdvRepositoryInterface
     public function addRdv(string $id, RendezVous $rdv): void {
         $this->rdvs[$id] = $rdv;
     }
+
 
     public function delete(string $id): void{
         unset($this->rdvs[$id]);

@@ -17,7 +17,7 @@ class PraticienDTO extends DTO
 
     public function __construct(Praticien $p)
     {
-        $this->id = $p->getID();
+        $this->id = $p->getId();
         $this->nom = $p->nom;
         $this->prenom = $p->prenom;
         $this->adresse = $p->adresse;

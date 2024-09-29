@@ -13,14 +13,14 @@ class Specialite extends Entity
 
     public function __construct(string $ID, string $label, string $description)
     {
-        $this->ID = $ID;
+        $this->id = $ID;
         $this->label = $label;
         $this->description = $description;
     }
 
     public function toDTO(): SpecialiteDTO
     {
-        return new SpecialiteDTO($this->ID, $this->label, $this->description);
+        return new SpecialiteDTO($this->id, $this->label, $this->description);
 
     }
 }

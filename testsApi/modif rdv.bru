@@ -1,20 +1,21 @@
 meta {
-  name: createRdv
+  name: modif rdv
   type: http
-  seq: 4
+  seq: 6
 }
 
-post {
-  url: http://localhost:6080/rdvs
+patch {
+  url: http://localhost:6080/rdvs/r1
   body: json
   auth: none
 }
 
 body:json {
   {
+    "id":"r1",
     "praticienId": "p1",
     "patientId" : "pa1",
     "specialite" : "A",
-    "dateHeure" : "2024-10-27 14:00"
+    "dateHeure" : "2024-09-27 13:00"
   }  
 }

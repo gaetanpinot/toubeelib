@@ -2,28 +2,21 @@
 
 namespace toubeelib\application\actions;
 
-use _PHPStan_9815bbba4\Nette\Neon\Exception;
-use DateTimeImmutable;
 use Error;
-use MongoDB\Driver\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpInternalServerErrorException;
-use Slim\Factory\AppFactory;
 use Slim\Routing\RouteContext;
-use Slim\Routing\RouteParser;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\dto\InputRdvDto;
-use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\rdv\ServiceRDV;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
 use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 use toubeelib\infrastructure\repositories\ArrayRdvRepository;
-use function DI\string;
 
 class PostCreateRdv extends AbstractAction
 {
@@ -47,8 +40,7 @@ class PostCreateRdv extends AbstractAction
             //validation
             $rdvInputValidator->assert($jsonRdv);
             //formatage
-            $dateHeure = DateTimeImmutable::createFromFormat('Y-m-d H:i', $jsonRdv["dateHeure"]);
-            $inputRdvDto = new InputRdvDto($jsonRdv['praticienId'], $jsonRdv['patientId'], $jsonRdv['specialite'], $dateHeure);
+            $inputRdvDto = new InputRdvDto($jsonRdv['praticienId'], $jsonRdv['patientId'], $jsonRdv['specialite'], $jsonRdv['dateHeure']);
             $dtoRendezVousCree = $serviceRdv->creerRendezvous($inputRdvDto);
 
 

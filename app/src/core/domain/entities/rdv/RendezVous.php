@@ -12,7 +12,6 @@ use toubeelib\core\domain\entities\patient;
 
 class RendezVous extends Entity
 {
-    protected string $id;
 
     protected \DateTimeImmutable $dateHeure;
     protected string $praticienID;
@@ -64,7 +63,7 @@ class RendezVous extends Entity
         $this->status = 0;
     }
 
-    public static function fromInputDto(InputRdvDto $rdv)
+    public static function fromInputDto(InputRdvDto $rdv):RendezVous
     {
         return new RendezVous(
             $rdv->getPraticienId(),

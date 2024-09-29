@@ -21,7 +21,7 @@ use toubeelib\infrastructure\repositories\ArrayRdvRepository;
 class GetRdvId extends AbstractAction
 {
 
-    public static function ajouterLiensRdv(RdvDTO $rdv, ServerRequestInterface $rq){
+    public static function ajouterLiensRdv(RdvDTO $rdv, ServerRequestInterface $rq):array{
         $routeParser = RouteContext::fromRequest($rq)->getRouteParser();
         return ["rendezVous" => $rdv,
             "links" => [
@@ -36,7 +36,7 @@ class GetRdvId extends AbstractAction
         $status = 200;
         try {
             $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
-            $rdvs = $serviceRdv->getRDVById($args['id']);
+            $rdvs = $serviceRdv->getRdvById($args['id']);
 
             $data=GetRdvId::ajouterLiensRdv($rdvs,$rq);
             $rs = JsonRenderer::render($rs, 200, $data);
