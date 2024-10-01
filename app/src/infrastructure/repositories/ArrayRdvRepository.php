@@ -46,8 +46,8 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         unset($this->rdvs[$id]);
     }
     
-    public function cancelRdv(string $id, string $status): void{
-        $this->rdvs[$id]->status = $status; 
+    public function cancelRdv(string $id): void{
+        $this->rdvs[$id]->setStatus(RendezVous::$ANNULE); 
     }
 
 

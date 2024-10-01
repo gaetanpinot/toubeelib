@@ -98,17 +98,17 @@ class ServiceRDV implements ServiceRDVInterface
     }
 
     /*string $praticienID*/
-    public function annulerRendezVous(string $id, string $status): void
+    public function annulerRendezVous(string $id): void
     {
         try {
             $rdv = $this->rdvRepository->getRdvById($id);
-            $status = $rdv->status;
+            $status = $rdv->getStatus();
 
-            $status != RendezVous::$ANNULE ? RendezVous::$ANNULE : $status;
-            $this->rdvRepository->cancelRdv($id, $status);
+            $status != RendezVous::$ANNULE ? $this->rdvRepository->cancelRdv($id) : throw new ServiceRDVInvalidDataException('RDV déjà annulé');
+            
             
         } catch (RepositoryEntityNotFoundException $e) {
-            throw new ServiceRDVInvalidDataException('invalid RDV ID OR Canceled ' . $e->getMessage());
+            throw new ServiceRDVInvalidDataException('invalid RDV ID ' . $e->getMessage());
         }
     }
 

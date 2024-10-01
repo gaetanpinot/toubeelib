@@ -16,7 +16,7 @@ class DeleteRdvId extends AbstractAction
 
         $status = 200;
         try {
-            $this->serviceRdv->supprimerRendezVous($args['id']);
+            $this->serviceRdv->annulerRendezVous($args['id']);
             $data = [];
         } catch (ServiceRDVInvalidDataException $e) {
             throw new HttpNotFoundException($rq,$e->getMessage());
