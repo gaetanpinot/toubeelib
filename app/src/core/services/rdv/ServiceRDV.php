@@ -38,6 +38,7 @@ class ServiceRDV implements ServiceRDVInterface
         }
         $praticien = $this->servicePraticien->getPraticienById($rdv->getPracticienId());
         return $rdv->toDTO($praticien);
+
     }
 
     /*string $praticienID, $patientID, string $specialite, \DateTimeImmutable $dateHeure*/
@@ -70,10 +71,13 @@ class ServiceRDV implements ServiceRDVInterface
     // TODO: transferer methode a ServicePraticien
     public function getListeDisponibilite(string $idPraticien): array
     {
+
         $results = [];
         $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
         $listeRDVHorraires = array_map(function ($rdv) {
-            return $rdv->dateHeure->format('Y-m-d H:i');
+            if ($rdv->status != RendezVous::$ANNULE) {
+                return $rdv->dateHeure->format('Y-m-d H:i');
+            }
         }, $listeRDV);
         $startDate = new \DateTimeImmutable("now");
         $startDate = $startDate->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
@@ -95,11 +99,18 @@ class ServiceRDV implements ServiceRDVInterface
     }
 
     /*string $praticienID*/
-    public function supprimerRendezVous(string $id): void
+    public function annulerRendezVous(string $id, string $status): void
     {
         try {
-            $rdv = $this->rdvRepository->getRdvById($id);
-            $this->rdvRepository->delete($id);
+            if ($status == RendezVous::$ANNULE) {
+                throw new ServiceRDVInvalidDataException('RDV déjà annulé');
+            }else{
+                $rdv = $this->rdvRepository->getRdvById($id);
+                $status = RendezVous::$ANNULE;
+                $this->rdvRepository->cancelRdv($rdv->getId(), $rdv->$status);
+            }
+
+            
         } catch (RepositoryEntityNotFoundException $e) {
             throw new ServiceRDVInvalidDataException('invalid RDV ID');
         }

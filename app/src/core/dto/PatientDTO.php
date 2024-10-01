@@ -2,7 +2,7 @@
 
 namespace toubeelib\core\dto;
 
-use toubeelib\core\domain\entities\praticien\rdv;
+use toubeelib\core\domain\entities\Praticien;
 use toubeelib\core\dto\DTO;
 
 class PatientDTO extends DTO

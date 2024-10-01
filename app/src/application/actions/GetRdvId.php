@@ -14,6 +14,7 @@ use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
 
 class GetRdvId extends AbstractAction
 {
+        // todo : check status
 
     public static function ajouterLiensRdv(RdvDTO $rdv, ServerRequestInterface $rq):array{
         $routeParser = RouteContext::fromRequest($rq)->getRouteParser();

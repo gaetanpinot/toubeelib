@@ -2,8 +2,12 @@
 
 namespace toubeelib\core\services\praticien;
 
+// ! Not use
 use Respect\Validation\Exceptions\NestedValidationException;
 use toubeelib\core\domain\entities\praticien\Praticien;
+// ! Not use
+
+
 use toubeelib\core\dto\InputPraticienDTO;
 use toubeelib\core\dto\PraticienDTO;
 use toubeelib\core\dto\SpecialiteDTO;

@@ -12,6 +12,13 @@ use toubeelib\core\domain\entities\patient;
 
 class RendezVous extends Entity
 {
+    //todo :  0 maintenu(default) / 1 honoré / 2 non honoré / 3 annulé /  4 payé / 5 pas payé 
+    public static int $MAINTENU = 0;
+    public static int $HONORE = 1;
+    public static int $NON_HONORE = 2;
+    public static int $ANNULE = 3;
+    public static int $PAIE = 4;
+    public static int $PAS_PAYE = 5;
 
     protected \DateTimeImmutable $dateHeure;
     protected string $praticienID;
@@ -60,7 +67,7 @@ class RendezVous extends Entity
         $this->patientID = $patientID;
         $this->dateHeure = $dateHeure;
         $this->specialite = $specialite;
-        $this->status = 0;
+        $this->status = RendezVous::$MAINTENU;
     }
 
     public static function fromInputDto(InputRdvDto $rdv):RendezVous
