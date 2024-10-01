@@ -21,7 +21,6 @@ class PatchRdv extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-                $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
 
         $data=$rq->getParsedBody();
         $data['id']=$args['id'];
@@ -31,14 +30,14 @@ class PatchRdv extends AbstractAction
             ->key('praticienId', Validator::stringType()->notEmpty())
             ->key('patientId', Validator::stringType()->notEmpty())
             ->key('specialite', Validator::stringType()->notEmpty())
-            ->key('dateHeure', Validator::dateTime("Y-m-d H:i")->notEmpty())
+            ->key('dateHeure', Validator::dateTime($this->formatDate)->notEmpty())
             ;
 
         try{
             $rdvInputValidator->assert($data);
             $inputRdv = InputRdvDto::fromArray($data);
             $inputRdv->setId($data['id']);
-            $dto=$serviceRdv->modifRendezVous($inputRdv);
+            $dto=$this->serviceRdv->modifRendezVous($inputRdv);
             $data=GetRdvId::ajouterLiensRdv($dto, $rq);
             return JsonRenderer::render($rs, 201, $data);
 

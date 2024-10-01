@@ -25,7 +25,6 @@ class PostCreateRdv extends AbstractAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
 
-        $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
         $jsonRdv = $rq->getParsedBody();
 
         $status = 200;
@@ -34,14 +33,14 @@ class PostCreateRdv extends AbstractAction
         $rdvInputValidator = Validator::key('praticienId', Validator::stringType()->notEmpty())
             ->key('patientId', Validator::stringType()->notEmpty())
             ->key('specialite', Validator::stringType()->notEmpty())
-            ->key('dateHeure', Validator::dateTime("Y-m-d H:i")->notEmpty());
+            ->key('dateHeure', Validator::dateTime($this->formatDate)->notEmpty());
 
         try {
             //validation
             $rdvInputValidator->assert($jsonRdv);
             //formatage
             $inputRdvDto = new InputRdvDto($jsonRdv['praticienId'], $jsonRdv['patientId'], $jsonRdv['specialite'], $jsonRdv['dateHeure']);
-            $dtoRendezVousCree = $serviceRdv->creerRendezvous($inputRdvDto);
+            $dtoRendezVousCree = $this->serviceRdv->creerRendezvous($inputRdvDto);
 
 
             // route parser

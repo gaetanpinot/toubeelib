@@ -18,6 +18,7 @@ use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 class GetDisposPraticien extends AbstractAction{
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
+        
         $praticienValidator=Validator::key('id',Validator::stringType()->notEmpty());
 
         try{
@@ -25,7 +26,7 @@ class GetDisposPraticien extends AbstractAction{
             $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
             $dispos=$serviceRdv->getListeDisponibilite($args['id']);
             for($i=0; $i<count($dispos);$i++){
-                $dispos[$i]=$dispos[$i]->format('Y-m-d H:i:s');
+                $dispos[$i]=$dispos[$i]->format($this->formatDate);
             }
             return JsonRenderer::render($rs, 200, $dispos);
 

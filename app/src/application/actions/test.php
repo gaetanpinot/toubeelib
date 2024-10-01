@@ -22,7 +22,7 @@ class test extends AbstractAction
         $status = 200;
         try {
             $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
-            $rdvs = $serviceRdv->getRDVById('r1');
+            $rdvs = $serviceRdv->getRdvById('r1');
             $routeParser = RouteContext::fromRequest($rq)->getRouteParser();
             $data = ["rendezVous" => $rdvs,
                 "links" => [
