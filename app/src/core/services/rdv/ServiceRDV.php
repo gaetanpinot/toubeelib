@@ -14,7 +14,6 @@ use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
 
 class ServiceRDV implements ServiceRDVInterface
-
 {
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
@@ -102,19 +101,17 @@ class ServiceRDV implements ServiceRDVInterface
     public function annulerRendezVous(string $id, string $status): void
     {
         try {
-            if ($status == RendezVous::$ANNULE) {
-                throw new ServiceRDVInvalidDataException('RDV déjà annulé');
-            }else{
-                $rdv = $this->rdvRepository->getRdvById($id);
-                $status = RendezVous::$ANNULE;
-                $this->rdvRepository->cancelRdv($rdv->getId(), $rdv->$status);
-            }
+            $rdv = $this->rdvRepository->getRdvById($id);
+            $status = $rdv->status;
 
+            $status != RendezVous::$ANNULE ? RendezVous::$ANNULE : $status;
+            $this->rdvRepository->cancelRdv($id, $status);
             
         } catch (RepositoryEntityNotFoundException $e) {
-            throw new ServiceRDVInvalidDataException('invalid RDV ID');
+            throw new ServiceRDVInvalidDataException('invalid RDV ID OR Canceled ' . $e->getMessage());
         }
     }
+
     /* string $id, string $praticienId, string $patientId, string $specialite, \DateTimeImmutable $dateHeure */
     public function modifRendezVous(InputRdvDto $inputRdv) : RdvDTO {
         try {

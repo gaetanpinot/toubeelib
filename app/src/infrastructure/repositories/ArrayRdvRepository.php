@@ -7,9 +7,11 @@ use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 
+
 class ArrayRdvRepository implements RdvRepositoryInterface
 {
     private array $rdvs = [];
+
 
     public function __construct() {
             $r1 = new RendezVous('p1', 'pa1', 'A', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-29 09:30') );
@@ -42,6 +44,10 @@ class ArrayRdvRepository implements RdvRepositoryInterface
 
     public function delete(string $id): void{
         unset($this->rdvs[$id]);
+    }
+    
+    public function cancelRdv(string $id, string $status): void{
+        $this->rdvs[$id]->status = $status; 
     }
 
 
