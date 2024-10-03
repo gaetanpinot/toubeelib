@@ -22,14 +22,16 @@ $app->addErrorMiddleware($c->get('displayErrorDetails'), false, false);
 //    ->getDefaultErrorHandler()
 //    ->forceContentType('application/json')
 
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+
+
 $app->add(function ($request, $handler) {
-    if (! $request->hasHeader('Origin'))
-throw new HttpUnauthorizedException ($request, "missing Origin Header (cors)");
     $response = $handler->handle($request);
     return $response
-        ->withHeader('Access-Control-Allow-Origin', 'localhost:6080')
+        ->withHeader('Access-Control-Allow-Origin', '*')
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-        ->withHeader('Access-Control-Max-Age', 3600)
         ->withHeader('Access-Control-Allow-Credentials', 'true')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
