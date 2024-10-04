@@ -5,6 +5,8 @@ namespace toubeelib\core\services\rdv;
 use DateInterval;
 use DateTimeImmutable;
 use Error;
+use Faker\Core\Uuid;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\dto\InputRdvDto;
 use toubeelib\core\dto\RdvDTO;
@@ -47,11 +49,8 @@ class ServiceRDV implements ServiceRDVInterface
     {
         $rdv = RendezVous::fromInputDto($inputRdvDto);
 
-        // ! temporaire
-        // TODO:  a remplacer par uuid
-        $id = 'r' . random_int(0, 1000000000);
+        $id = RamseyUuid::uuid4()->__toString();
         $rdv->setId($id);
-        // ! temporaire
 
         try {
             $praticien = $this->servicePraticien->getPraticienById($rdv->getPraticienID());
@@ -77,7 +76,9 @@ class ServiceRDV implements ServiceRDVInterface
         $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
         $listeRDVHorraires = array_map(function ($rdv) {
             if ($rdv->status != RendezVous::$ANNULE) {
-                return $rdv->dateHeure->format('Y-m-d H:i');
+                $rr= $rdv->dateHeure->format('Y-m-d H:i');
+                return $rr;
+
             }
         }, $listeRDV);
         $startDate = new \DateTimeImmutable("now");

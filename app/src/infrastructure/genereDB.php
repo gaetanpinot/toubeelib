@@ -206,7 +206,7 @@ for($i=0;$i<$nbPatient;$i++){
 		'tel'=>$faker->phoneNumber(),
 		'mail'=>$faker->email(),
 		'idMedcinTraitant'=>$praticienIds[$faker->numberBetween(0,count($praticienIds)-1)],
-		'numSecuSociale'=> $faker->nir() //erreur nir pas trouvé mais fonctionne si localite du faker a fr_FR
+		'numSecuSociale'=> $faker->nir() //erreur nir pas trouvé mais fonctionne si localite du faker à fr_FR
 
 	];
 	$insert->execute($val);
