@@ -2,13 +2,11 @@
 
 namespace toubeelib\core\domain\entities\rdv;
 
+use Monolog\DateTimeImmutable;
 use toubeelib\core\domain\entities\Entity;
 use toubeelib\core\dto\InputRdvDto;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\dto\PraticienDTO;
-use toubeelib\core\domain\entities\praticien;
-use toubeelib\core\domain\entities\praticien\specialite;
-use toubeelib\core\domain\entities\patient;
 
 class RendezVous extends Entity
 {
@@ -20,7 +18,7 @@ class RendezVous extends Entity
     public static int $PAIE = 4;
     public static int $PAS_PAYE = 5;
 
-    protected \DateTimeImmutable $dateHeure;
+    protected DateTimeImmutable $dateHeure;
     protected string $praticienID;
     protected string $specialite;
     protected string $patientID;
@@ -28,7 +26,7 @@ class RendezVous extends Entity
     protected int $status;
 
 
-    public function getDateHeure(): \DateTimeImmutable
+    public function getDateHeure(): DateTimeImmutable
     {
         return $this->dateHeure;
     }
@@ -61,7 +59,7 @@ class RendezVous extends Entity
      * $r1 = new RendezVous('p1', 'pa1', 'A', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:00') );
      *       $r1->setID('r1');
      */
-    public function __construct(string $praticienID, string $patientID, string $specialite, \DateTimeImmutable $dateHeure)
+    public function __construct(string $praticienID, string $patientID, string $specialite, DateTimeImmutable $dateHeure)
     {
         $this->praticienID = $praticienID;
         $this->patientID = $patientID;

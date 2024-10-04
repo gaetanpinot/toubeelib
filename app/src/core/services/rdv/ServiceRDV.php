@@ -3,6 +3,7 @@
 namespace toubeelib\core\services\rdv;
 
 use DateInterval;
+use DateTimeImmutable;
 use Error;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\dto\InputRdvDto;
@@ -19,9 +20,9 @@ class ServiceRDV implements ServiceRDVInterface
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
 
-    const INTERVAL = 30;
-    const HDEBUT = [9, 00];
-    const HFIN = [17, 30];
+    public const INTERVAL = 30;
+    public const HDEBUT = [9, 00];
+    public const HFIN = [17, 30];
 
     public function __construct(ServicePraticien $servicePraticien, RdvRepositoryInterface $rdvRepository)
     {
@@ -159,5 +160,9 @@ class ServiceRDV implements ServiceRDVInterface
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServiceRDVInvalidDataException('RDV invalide' . $e->getMessage());
         } 
+    }
+
+    public function supprimerRendezVous(string $id): void
+    {
     }
 }
