@@ -16,6 +16,14 @@ class RdvDTO extends DTO
     public string $consultationType;
     public int $status;
 
+    public function setStatus(int $status):void {
+        $this->status = $status;
+    }
+
+    public function getStatus(): int{
+        return $this->status;
+    }
+
 
     public function __construct(RendezVous $r, PraticienDTO $praticienDTO)
     {

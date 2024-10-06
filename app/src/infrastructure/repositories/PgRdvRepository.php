@@ -119,7 +119,7 @@ class PgRdvRepository implements  RdvRepositoryInterface{
         }
     }
 
-    public function cancelRdv(string $id ): RendezVous
+    public function cancelRdv(string $id ): void
     {
         try{
             $query = 'update rdv
@@ -133,8 +133,6 @@ class PgRdvRepository implements  RdvRepositoryInterface{
             if(!$rdvAffecte){
                 throw new RepositoryEntityNotFoundException("Rdv $id non trouvé, rdv affécté = $rdvAffecte");
             }
-
-            return $this->getRdvById($id);
 
         }catch(\PDOException $e){
             throw new RepositoryInternalException($e->getMessage());
