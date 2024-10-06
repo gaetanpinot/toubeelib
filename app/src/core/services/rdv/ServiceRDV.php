@@ -125,37 +125,37 @@ class ServiceRDV implements ServiceRDVInterface
             // todo : test NEW praticienId exists
 
             //ancien rdv
-            $rdv = $this->rdvRepository->getRdvById($inputRdv->getId());
+            $ancienRdv = $this->rdvRepository->getRdvById($inputRdv->getId());
 
             //praticien du nouveau rdv
             $praticien = $this->servicePraticien->getPraticienById($inputRdv->getPraticienId());
 
 
             // TODO: prendre les infos de l'ancient rdv
-            $getSpecialite = $this->servicePraticien->getSpecialiteById($rdv->getSpecialite())->getLabel();
-            $getPatientId = $rdv->getPatientID();
+            $specialiteAncienRdv = $this->servicePraticien->getSpecialiteById($ancienRdv->getSpecialite())->getLabel();
+            $patientIdAncienRdv = $ancienRdv->getPatientID();
 
 
             // todo: test spé de l'ancien rdv avec spé nouveau praticien
-            if ($praticien->specialiteLabel != $getSpecialite) {
-                throw new ServiceRDVInvalidDataException($praticien->specialiteLabel."!=".$getSpecialite);
+            if ($praticien->specialiteLabel != $specialiteAncienRdv) {
+                throw new ServiceRDVInvalidDataException($praticien->specialiteLabel."!=".$specialiteAncienRdv);
             }
             // test de l'ancien patient contre le nouveau patient
-            if ($getPatientId!= $inputRdv->getPatientId()){
+            if ($patientIdAncienRdv!= $inputRdv->getPatientId()){
                 throw new ServiceRDVInvalidDataException('modification du patient interdit');
             }
 
             // !: supp ancient rdv
 
-            $this->rdvRepository->delete($rdv->getId());
+            $this->rdvRepository->delete($ancienRdv->getId());
 
             // !: créer nouveau rdv avec RdvId et spé qui reste en changeant date, praticien
 
-            $rdvId=$rdv->getId();
-            $rdv = RendezVous::fromInputDto($inputRdv);
-            $rdv->setId($rdvId);
-            $this->rdvRepository->addRdv($rdvId,$rdv);
-            return $rdv->toDTO($praticien);
+            $rdvId=$ancienRdv->getId();
+            $ancienRdv = RendezVous::fromInputDto($inputRdv);
+            $ancienRdv->setId($rdvId);
+            $this->rdvRepository->addRdv($rdvId,$ancienRdv);
+            return $ancienRdv->toDTO($praticien);
 
 
 

@@ -139,4 +139,29 @@ class PgRdvRepository implements  RdvRepositoryInterface{
         }
     }
 
+    public function modifierRdv(RendezVous $rdv): void
+    {
+        try{
+            $query = 
+            'update rdv
+            set date = :date,
+            patientId = :patientId,
+            praticienId = :praticienId,
+            status = :status
+            where id = :id;';
+
+            $val=[
+                'id' => $rdv->getId(),
+                'date' => $rdv->getDateHeure()->format('Y-m-d H:i'),
+                'patientId' => $rdv->getPatientID(),
+                'praticienId' => $rdv->getPraticienID(),
+                'status' => $rdv->getStatus()
+            ];
+            $this->pdo->prepare($query)->execute($val);
+
+        }catch(\PDOException $e){
+            throw new RepositoryInternalException($e->getMessage());
+        }
+    }
+
 }
