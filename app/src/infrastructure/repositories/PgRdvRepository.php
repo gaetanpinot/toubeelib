@@ -1,6 +1,7 @@
 <?php
 namespace toubeelib\infrastructure\repositories;
 
+use RepositoryInternalException;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use PDO;
@@ -27,15 +28,22 @@ class PgRdvRepository implements  RdvRepositoryInterface{
             rdv.id as id,
             rdv.patientid as patientid,
             rdv.praticienid as praticienid,
-        to_char(rdv.date,\'YYYY-MM-DD HH24:MI\') as date, 
-            praticien.specialite as specialite from rdv,praticien 
+            to_char(rdv.date,\'YYYY-MM-DD HH24:MI\') as date, 
+            praticien.specialite as specialite,
+            rdv.status as status
+            from rdv,praticien 
             where rdv.praticienid=praticien.id and rdv.id=:id;';
             $statement=$this->pdo->prepare($query);
             $statement->execute(['id'=>$id]);
             $rdv=$statement->fetch();
             // var_dump($rdv);
             if($rdv){
-                $retour = new RendezVous($rdv['praticienid'],$rdv['patientid'],$rdv['specialite'], \DateTimeImmutable::createFromFormat('Y-m-d H:i',$rdv['date']));
+                $retour = new RendezVous(
+                    $rdv['praticienid'],
+                    $rdv['patientid'],
+                    $rdv['specialite'],
+                    \DateTimeImmutable::createFromFormat('Y-m-d H:i',$rdv['date']),
+                $rdv['status']);
                 $retour->setId($rdv['id']);
                 return $retour;
             }else{
@@ -66,6 +74,17 @@ class PgRdvRepository implements  RdvRepositoryInterface{
 
     public function delete(string $id): void
     {
+        try{
+            $query = 'delete from rdv where id=:id;';
+            $val=[
+                'id' => $id
+            ];
+
+            $this->pdo->prepare($query)->execute($val);
+
+        }catch(\PDOException $e){
+            throw new RepositoryInternalException($e->getMessage());
+        }
     }
 
     public function getRdvByPraticien(string $id): array
@@ -74,7 +93,7 @@ class PgRdvRepository implements  RdvRepositoryInterface{
             $query = "select 
             rdv.id as id,rdv.patientid as patientid,rdv.praticienid as praticienid,
             rdv.date as date, praticien.specialite as specialite 
-             from rdv,praticien,specialite where rdv.praticienId=praticien.id and praticien.specialite=specialite.id and praticien.id= :id;";
+            from rdv,praticien,specialite where rdv.praticienId=praticien.id and praticien.specialite=specialite.id and praticien.id= :id;";
             $rdvs=$this->pdo->prepare($query);
             $rdvs->execute(['id'=> $id]);
             $result = $rdvs->fetchAll();
@@ -100,8 +119,26 @@ class PgRdvRepository implements  RdvRepositoryInterface{
         }
     }
 
-    public function cancelRdv(string $id, string $status): RendezVous
+    public function cancelRdv(string $id ): RendezVous
     {
+        try{
+            $query = 'update rdv
+            set status= :annule
+            where id = :id;';
+            $val = [
+                'annule' => RendezVous::ANNULE,
+                'id' => $id
+            ];
+            $rdvAffecte = $this->pdo->prepare($query)->execute($val);
+            if(!$rdvAffecte){
+                throw new RepositoryEntityNotFoundException("Rdv $id non trouvé, rdv affécté = $rdvAffecte");
+            }
+
+            return $this->getRdvById($id);
+
+        }catch(\PDOException $e){
+            throw new RepositoryInternalException($e->getMessage());
+        }
     }
 
 }

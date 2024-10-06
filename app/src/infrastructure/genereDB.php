@@ -122,27 +122,27 @@ foreach($spe as $s){
 
 
 $status=[
-	[ 'id'=> RendezVous::$MAINTENU,
+	[ 'id'=> RendezVous::MAINTENU,
 		'label' =>'Maintenu'
 	],
 	[
-		'id'=> RendezVous::$PAIE,
+		'id'=> RendezVous::PAIE,
 		'label'=>'Payé'
 	],
 	[
-		'id'=> RendezVous::$HONORE,
+		'id'=> RendezVous::HONORE,
 		'label' => 'Honoré'
 	],
 	[
-		'id'=> RendezVous::$ANNULE,
+		'id'=> RendezVous::ANNULE,
 		'label' => 'Annulé'
 	],
 	[
-		'id' => RendezVous::$PAS_PAYE,
+		'id' => RendezVous::PAS_PAYE,
 		'label' => 'Pas payé'
 	],
 	[
-		'id' => RendezVous::$NON_HONORE,
+		'id' => RendezVous::NON_HONORE,
 		'label'=> 'Non honoré'
 	]
 ];
@@ -236,9 +236,9 @@ for($i=0;$i<$nbRdv;$i){
 		'status' => $statusIds[$faker->numberBetween(0,count($statusIds)-1)]
 	];
 	$resultVerif=1;
-	if($val['status']!=RendezVous::$ANNULE){
+	if($val['status']!=RendezVous::ANNULE){
 		// $resultVerif = $verif->execute($val);
-		$verif->execute(['date'=>$val['date'],'praticienId'=>$val['praticienId'],'annule'=>RendezVous::$ANNULE]);
+		$verif->execute(['date'=>$val['date'],'praticienId'=>$val['praticienId'],'annule'=>RendezVous::ANNULE]);
 		$resultVerif=$verif->fetch();
 	}
 	if(!$resultVerif){

@@ -2,7 +2,7 @@
 
 namespace toubeelib\core\domain\entities;
 
- class Entity
+abstract class Entity
 {
 
     protected ?string $id=null;
