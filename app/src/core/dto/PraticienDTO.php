@@ -4,7 +4,6 @@ namespace toubeelib\core\dto;
 
 use toubeelib\core\domain\entities\praticien\Praticien;
 use toubeelib\core\dto\DTO;
-use function _PHPStan_9815bbba4\React\Async\waterfall;
 
 class PraticienDTO extends DTO
 {

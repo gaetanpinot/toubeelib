@@ -3,11 +3,15 @@
 namespace toubeelib\core\services\rdv;
 
 use DateInterval;
+use DateTimeImmutable;
 use Error;
+use Faker\Core\Uuid;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\dto\InputRdvDto;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib\core\services\ServiceOperationInvalideException;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
@@ -21,9 +25,9 @@ class ServiceRDV implements ServiceRDVInterface
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
 
-    const INTERVAL = 30;
-    const HDEBUT = [9, 00];
-    const HFIN = [17, 30];
+    public const INTERVAL = 30;
+    public const HDEBUT = [9, 00];
+    public const HFIN = [17, 30];
 
     public function __construct(ServicePraticien $servicePraticien, RdvRepositoryInterface $rdvRepository)
     {
@@ -40,6 +44,7 @@ class ServiceRDV implements ServiceRDVInterface
         }
         $praticien = $this->servicePraticien->getPraticienById($rdv->getPracticienId());
         return $rdv->toDTO($praticien);
+
     }
 
     /*string $praticienID, $patientID, string $specialite, \DateTimeImmutable $dateHeure*/
@@ -47,11 +52,8 @@ class ServiceRDV implements ServiceRDVInterface
     {
         $rdv = RendezVous::fromInputDto($inputRdvDto);
 
-        // ! temporaire
-        // TODO:  a remplacer par uuid
-        $id = 'r' . random_int(0, 1000000000);
+        $id = RamseyUuid::uuid4()->__toString();
         $rdv->setId($id);
-        // ! temporaire
 
         try {
             $praticien = $this->servicePraticien->getPraticienById($rdv->getPraticienID());
@@ -72,10 +74,15 @@ class ServiceRDV implements ServiceRDVInterface
     // TODO: transferer methode a ServicePraticien
     public function getListeDisponibilite(string $idPraticien): array
     {
+
         $results = [];
         $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
         $listeRDVHorraires = array_map(function ($rdv) {
-            return $rdv->dateHeure->format('Y-m-d H:i');
+            if ($rdv->status != RendezVous::ANNULE) {
+                $rr= $rdv->dateHeure->format('Y-m-d H:i');
+                return $rr;
+
+            }
         }, $listeRDV);
         $startDate = new \DateTimeImmutable("now");
         $startDate = $startDate->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
@@ -97,13 +104,20 @@ class ServiceRDV implements ServiceRDVInterface
     }
 
     /*string $praticienID*/
-    public function supprimerRendezVous(string $id): void
+    public function annulerRendezVous(string $id ): RdvDTO
     {
         try {
-            $rdv = $this->rdvRepository->getRdvById($id);
-            $this->rdvRepository->delete($id);
+            $rdvAAnnuler= $this->getRdvById($id);
+            if($rdvAAnnuler->getStatus() == RendezVous::MAINTENU ||
+            $rdvAAnnuler->getStatus() == RendezVous::ANNULE){
+                $this->rdvRepository->cancelRdv($id);
+                $rdvAAnnuler->setStatus(RendezVous::ANNULE);
+                return $rdvAAnnuler;
+            }else{
+                throw new ServiceOperationInvalideException("Rendez vous $id non annulable");
+            }
         } catch (RepositoryEntityNotFoundException $e) {
-            throw new ServiceRDVInvalidDataException('invalid RDV ID');
+            throw new ServiceRDVInvalidDataException($e->getMessage());
         }
     }
 

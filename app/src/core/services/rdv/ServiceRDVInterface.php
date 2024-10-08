@@ -12,4 +12,6 @@ interface ServiceRDVInterface
 public function creerRendezvous(InputRdvDto $rdv): RdvDTO;
 public function modifRendezVous(InputRdvDto $rdv): RdvDTO;
 public function supprimerRendezVous(string $id): void;
+public function getListeDisponibilite(string $id): array;
+    public function annulerRendezVous(string $id ): RdvDTO;
 }

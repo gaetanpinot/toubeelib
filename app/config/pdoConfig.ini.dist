@@ -1,0 +1,8 @@
+driver=pgsql
+user=user
+password=toto
+host=toubeelib.db
+port=5432
+dbname=toubeelib
+# hostWeb=http://localhost:63342/SAE-3.02-Touiteur.app
+

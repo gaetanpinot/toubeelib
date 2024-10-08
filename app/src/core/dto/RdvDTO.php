@@ -16,6 +16,14 @@ class RdvDTO extends DTO
     public string $consultationType;
     public int $status;
 
+    public function setStatus(int $status):void {
+        $this->status = $status;
+    }
+
+    public function getStatus(): int{
+        return $this->status;
+    }
+
 
     public function __construct(RendezVous $r, PraticienDTO $praticienDTO)
     {
@@ -24,8 +32,8 @@ class RdvDTO extends DTO
         $this->praticien = $praticienDTO;
         $this->specialiteLabel = $r->specialite;
         $this->patientId = $r->patientID;
-//        $this->consultationType = $r->consultationType;
-        $this->status = $r->status;
+        //$this->consultationType = $r->consultationType; //todo :  0 présentiel / 1 tel consultation 
+        $this->status = $r->status; //todo :  0 maintenu(default) / 1 honoré / 2 non honoré / 3 annulé /  5 payé / 6 pas payé 
     }
 
 
@@ -33,8 +41,7 @@ class RdvDTO extends DTO
     {
         $retour= get_object_vars($this);
         unset($retour['businessValidator']);
-        unset($retour['status']);
-        $retour['dateHeure']=$retour['dateHeure']->format('Y-m-d H:i:s');
+        $retour['dateHeure']=$retour['dateHeure']->format('Y-m-d H:i');
         return $retour;
     }
 

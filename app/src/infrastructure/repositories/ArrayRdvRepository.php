@@ -44,6 +44,10 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         unset($this->rdvs[$id]);
     }
 
+    public function cancelRdv(string $id, string $status): RendezVous
+    {
+    }
+
 
   
 }
