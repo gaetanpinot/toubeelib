@@ -1,4 +1,10 @@
 # Toubeelib
+## Config
+Fichier de config à créer (copier le fichier .dist existant en enlevant .dist):
+- `./toubeelib.env`
+- `./toubeelibdb.env`
+- `./app/config/pdoConfig.ini`
+Les mots de passes doivent être consistant dans la db
 
 ## Todolist:
 - [ ] API respectant les principes RESTful : désigation des ressources (URIs), opérations et méthodes
