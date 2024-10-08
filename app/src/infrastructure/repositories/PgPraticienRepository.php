@@ -1,13 +1,12 @@
 <?php
 namespace toubeelib\infrastructure\repositories;
 
-use RepositoryInternalException;
+use toubeelib\core\repositoryInterfaces\RepositoryInternalException;
 use toubeelib\core\domain\entities\praticien\Praticien;
 use toubeelib\core\domain\entities\praticien\Specialite;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use PDO;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
-use toubeelib\core\repositoryInterfaces\RepositoryInternalException as toubeelibRepositoryInternalException;
 
 class PgPraticienRepository implements PraticienRepositoryInterface{
 

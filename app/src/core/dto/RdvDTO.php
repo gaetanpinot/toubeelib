@@ -41,7 +41,7 @@ class RdvDTO extends DTO
     {
         $retour= get_object_vars($this);
         unset($retour['businessValidator']);
-        $retour['dateHeure']=$retour['dateHeure']->format('Y-m-d H:i:s');
+        $retour['dateHeure']=$retour['dateHeure']->format('Y-m-d H:i');
         return $retour;
     }
 

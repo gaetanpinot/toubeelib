@@ -69,7 +69,7 @@ foreign key(status) references status(id)
 
 
 
-$co = new PDO('pgsql:host=toubeelib.db;port=5432;dbname=toubeelib;user=user;password=toto');
+$co = new PDO('pgsql:host=toubeelib.db;port=5432;dbname=toubeelib;user=admin;password=admin');
 $res=$co->exec($drop);
 $res=$co->exec($cspecialite);
 $res=$co->exec($cstatus);

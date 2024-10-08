@@ -32,5 +32,6 @@ return [
         DI\get(ServiceRDVInterface::class),
         DI\get(ServicePraticienInterface::class),
         DI\get('date.format') ),
+    
 
 ];
