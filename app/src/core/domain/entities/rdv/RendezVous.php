@@ -16,7 +16,7 @@ class RendezVous extends Entity
     protected \DateTimeImmutable $dateHeure;
     protected string $praticienID;
     protected string $specialite;
-    protected string $patientID;
+    protected string $patientId;
 
     protected int $status;
 
@@ -38,7 +38,7 @@ class RendezVous extends Entity
 
     public function getPatientID(): string
     {
-        return $this->patientID;
+        return $this->patientId;
     }
 
     public function getStatus(): int
