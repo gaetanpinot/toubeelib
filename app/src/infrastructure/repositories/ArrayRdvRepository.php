@@ -50,6 +50,10 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         $this->rdvs[$id]->setStatus(RendezVous::$ANNULE); 
     }
 
+    public function cancelRdv(string $id, string $status): RendezVous
+    {
+    }
+
 
   
 }

@@ -16,6 +16,14 @@ class RdvDTO extends DTO
     public string $consultationType;
     public int $status;
 
+    public function setStatus(int $status):void {
+        $this->status = $status;
+    }
+
+    public function getStatus(): int{
+        return $this->status;
+    }
+
 
     public function __construct(RendezVous $r, PraticienDTO $praticienDTO)
     {
@@ -33,7 +41,6 @@ class RdvDTO extends DTO
     {
         $retour= get_object_vars($this);
         unset($retour['businessValidator']);
-        unset($retour['status']);
         $retour['dateHeure']=$retour['dateHeure']->format('Y-m-d H:i:s');
         return $retour;
     }

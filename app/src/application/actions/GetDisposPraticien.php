@@ -23,8 +23,7 @@ class GetDisposPraticien extends AbstractAction{
 
         try{
             $praticienValidator->assert($args);
-            $serviceRdv = new ServiceRDV(new ServicePraticien(new ArrayPraticienRepository()), new ArrayRdvRepository());
-            $dispos=$serviceRdv->getListeDisponibilite($args['id']);
+            $dispos=$this->serviceRdv->getListeDisponibilite($args['id']);
             for($i=0; $i<count($dispos);$i++){
                 $dispos[$i]=$dispos[$i]->format($this->formatDate);
             }

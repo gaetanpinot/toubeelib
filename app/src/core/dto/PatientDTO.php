@@ -7,6 +7,7 @@ use toubeelib\core\dto\DTO;
 
 class PatientDTO extends DTO
 {
+    
     protected string $ID;
     protected string $nom;
     protected string $prenom;

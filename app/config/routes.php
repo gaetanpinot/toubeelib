@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Slim\Exception\HttpNotFoundException;
 use \toubeelib\application\actions\GetDisposPraticien;
 
 return function (\Slim\App $app): \Slim\App {
@@ -22,7 +23,9 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->get('/praticiens/{id}/dispos[/]', GetDisposPraticien::class)->setName('disposPraticien');
 
-    
+$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
+    throw new HttpNotFoundException($request);
+});    
 
 
     return $app;

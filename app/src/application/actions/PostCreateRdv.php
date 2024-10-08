@@ -58,7 +58,7 @@ class PostCreateRdv extends AbstractAction
             throw new HttpInternalServerErrorException($rq, $e->getMessage());
 //            throw new HttpInternalServerErrorException($rq, "Erreur serveur");
         } catch (Error $e) {
-            echo $e->getTraceAsString();
+            throw new HttpInternalServerErrorException($rq,$e->getMessage());
         }
 
 

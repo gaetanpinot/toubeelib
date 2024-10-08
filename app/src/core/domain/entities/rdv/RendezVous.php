@@ -2,23 +2,21 @@
 
 namespace toubeelib\core\domain\entities\rdv;
 
+use DateTimeImmutable;
 use toubeelib\core\domain\entities\Entity;
 use toubeelib\core\dto\InputRdvDto;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\dto\PraticienDTO;
-use toubeelib\core\domain\entities\praticien;
-use toubeelib\core\domain\entities\praticien\specialite;
-use toubeelib\core\domain\entities\patient;
 
 class RendezVous extends Entity
 {
     //todo :  0 maintenu(default) / 1 honoré / 2 non honoré / 3 annulé /  4 payé / 5 pas payé 
-    public static int $MAINTENU = 0;
-    public static int $HONORE = 1;
-    public static int $NON_HONORE = 2;
-    public static int $ANNULE = 3;
-    public static int $PAIE = 4;
-    public static int $PAS_PAYE = 5;
+    public const  MAINTENU = 0;
+    public const HONORE = 1;
+    public const  NON_HONORE = 2;
+    public const  ANNULE = 3;
+    public const  PAIE = 4;
+    public const  PAS_PAYE = 5;
 
     protected \DateTimeImmutable $dateHeure;
     protected string $praticienID;
@@ -64,14 +62,15 @@ class RendezVous extends Entity
     /**
      * $r1 = new RendezVous('p1', 'pa1', 'A', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:00') );
      *       $r1->setID('r1');
+     * @param mixed $status
      */
-    public function __construct(string $praticienID, string $patientID, string $specialite, \DateTimeImmutable $dateHeure)
+    public function __construct(string $praticienID, string $patientID, string $specialite, \DateTimeImmutable $dateHeure, $status = RendezVous::MAINTENU)
     {
         $this->praticienID = $praticienID;
         $this->patientID = $patientID;
         $this->dateHeure = $dateHeure;
         $this->specialite = $specialite;
-        $this->status = RendezVous::$MAINTENU;
+        $this->status = $status;
     }
 
     public static function fromInputDto(InputRdvDto $rdv):RendezVous

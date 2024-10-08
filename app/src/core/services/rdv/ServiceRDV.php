@@ -3,11 +3,15 @@
 namespace toubeelib\core\services\rdv;
 
 use DateInterval;
+use DateTimeImmutable;
 use Error;
+use Faker\Core\Uuid;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\dto\InputRdvDto;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib\core\services\ServiceOperationInvalideException;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
@@ -18,9 +22,9 @@ class ServiceRDV implements ServiceRDVInterface
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
 
-    const INTERVAL = 30;
-    const HDEBUT = [9, 00];
-    const HFIN = [17, 30];
+    public const INTERVAL = 30;
+    public const HDEBUT = [9, 00];
+    public const HFIN = [17, 30];
 
     public function __construct(ServicePraticien $servicePraticien, RdvRepositoryInterface $rdvRepository)
     {
@@ -45,11 +49,8 @@ class ServiceRDV implements ServiceRDVInterface
     {
         $rdv = RendezVous::fromInputDto($inputRdvDto);
 
-        // ! temporaire
-        // TODO:  a remplacer par uuid
-        $id = 'r' . random_int(0, 1000000000);
+        $id = RamseyUuid::uuid4()->__toString();
         $rdv->setId($id);
-        // ! temporaire
 
         try {
             $praticien = $this->servicePraticien->getPraticienById($rdv->getPraticienID());
@@ -74,8 +75,10 @@ class ServiceRDV implements ServiceRDVInterface
         $results = [];
         $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
         $listeRDVHorraires = array_map(function ($rdv) {
-            if ($rdv->status != RendezVous::$ANNULE) {
-                return $rdv->dateHeure->format('Y-m-d H:i');
+            if ($rdv->status != RendezVous::ANNULE) {
+                $rr= $rdv->dateHeure->format('Y-m-d H:i');
+                return $rr;
+
             }
         }, $listeRDV);
         $startDate = new \DateTimeImmutable("now");
@@ -98,6 +101,7 @@ class ServiceRDV implements ServiceRDVInterface
     }
 
     /*string $praticienID*/
+<<<<<<< HEAD
     public function annulerRendezVous(string $id): void
     {
         try {
@@ -109,6 +113,22 @@ class ServiceRDV implements ServiceRDVInterface
             
         } catch (RepositoryEntityNotFoundException $e) {
             throw new ServiceRDVInvalidDataException('invalid RDV ID ' . $e->getMessage());
+=======
+    public function annulerRendezVous(string $id ): RdvDTO
+    {
+        try {
+            $rdvAAnnuler= $this->getRdvById($id);
+            if($rdvAAnnuler->getStatus() == RendezVous::MAINTENU ||
+            $rdvAAnnuler->getStatus() == RendezVous::ANNULE){
+                $this->rdvRepository->cancelRdv($id);
+                $rdvAAnnuler->setStatus(RendezVous::ANNULE);
+                return $rdvAAnnuler;
+            }else{
+                throw new ServiceOperationInvalideException("Rendez vous $id non annulable");
+            }
+        } catch (RepositoryEntityNotFoundException $e) {
+            throw new ServiceRDVInvalidDataException($e->getMessage());
+>>>>>>> 768fe3f9c1108061337a0c5efaf30590036df058
         }
     }
 
@@ -119,42 +139,46 @@ class ServiceRDV implements ServiceRDVInterface
             // todo : test NEW praticienId exists
 
             //ancien rdv
-            $rdv = $this->rdvRepository->getRdvById($inputRdv->getId());
+            $ancienRdv = $this->rdvRepository->getRdvById($inputRdv->getId());
 
             //praticien du nouveau rdv
             $praticien = $this->servicePraticien->getPraticienById($inputRdv->getPraticienId());
 
 
             // TODO: prendre les infos de l'ancient rdv
-            $getSpecialite = $this->servicePraticien->getSpecialiteById($rdv->getSpecialite())->getLabel();
-            $getPatientId = $rdv->getPatientID();
+            $specialiteAncienRdv = $this->servicePraticien->getSpecialiteById($ancienRdv->getSpecialite())->getLabel();
+            $patientIdAncienRdv = $ancienRdv->getPatientID();
 
 
             // todo: test spé de l'ancien rdv avec spé nouveau praticien
-            if ($praticien->specialiteLabel != $getSpecialite) {
-                throw new ServiceRDVInvalidDataException($praticien->specialiteLabel."!=".$getSpecialite);
+            if ($praticien->specialiteLabel != $specialiteAncienRdv) {
+                throw new ServiceRDVInvalidDataException($praticien->specialiteLabel."!=".$specialiteAncienRdv);
             }
             // test de l'ancien patient contre le nouveau patient
-            if ($getPatientId!= $inputRdv->getPatientId()){
+            if ($patientIdAncienRdv!= $inputRdv->getPatientId()){
                 throw new ServiceRDVInvalidDataException('modification du patient interdit');
             }
 
             // !: supp ancient rdv
 
-            $this->rdvRepository->delete($rdv->getId());
+            $this->rdvRepository->delete($ancienRdv->getId());
 
             // !: créer nouveau rdv avec RdvId et spé qui reste en changeant date, praticien
 
-            $rdvId=$rdv->getId();
-            $rdv = RendezVous::fromInputDto($inputRdv);
-            $rdv->setId($rdvId);
-            $this->rdvRepository->addRdv($rdvId,$rdv);
-            return $rdv->toDTO($praticien);
+            $rdvId=$ancienRdv->getId();
+            $ancienRdv = RendezVous::fromInputDto($inputRdv);
+            $ancienRdv->setId($rdvId);
+            $this->rdvRepository->addRdv($rdvId,$ancienRdv);
+            return $ancienRdv->toDTO($praticien);
 
 
 
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServiceRDVInvalidDataException('RDV invalide' . $e->getMessage());
         } 
+    }
+
+    public function supprimerRendezVous(string $id): void
+    {
     }
 }
