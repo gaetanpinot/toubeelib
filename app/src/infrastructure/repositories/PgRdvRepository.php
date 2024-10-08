@@ -1,7 +1,7 @@
 <?php
 namespace toubeelib\infrastructure\repositories;
 
-use RepositoryInternalException;
+use toubeelib\infrastructure\repositories\RepositoryInternalException;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use PDO;
@@ -50,7 +50,8 @@ class PgRdvRepository implements  RdvRepositoryInterface{
                 throw new RepositoryEntityNotFoundException("Rendez vous $id n'existe pas");
             }
         }catch(\PDOException $e){
-            throw new RepositoryInternalException('Problème avec la base de donnée postgres');
+            // throw new RepositoryInternalException('Problème avec la base de donnée postgres');
+            throw new RepositoryInternalException($e->getMessage());
         }
     }
 
