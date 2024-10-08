@@ -15,10 +15,8 @@ en particulier pour les bases de données,
 - [ ] utilisation de bases de données distinctes pour les patients, pour les RDV, pour les praticiens et
 ce qui s’y rattache, et pour l’authentification. Ces bases de données pourront éventuellement
 être gérées dans des conteneurs Docker différents.
-Les fonctionnalités minimales attendues (notées sur 4
-points)
+
 - [ ] créer un patient,
-1
 - [ ] lister/rechercher des praticiens par spécialité et/ou lieu d’exercice (ville),
 - [ ] lister les disponibilités d’un praticien sur une période donnée (date de début, date de fin),
 - [ ] réserver un rendez-vous pour un praticien et une spécialité à une date/heure donnée,
@@ -28,8 +26,7 @@ points)
 précisant la spécialité concernée et le type de consultation (présentiel, téléconsultation),
 - [ ] afficher les rendez-vous d’un patient,
 - [ ] s’authentifier en tant que patient ou praticien.
-Les fonctionnalités additionnelles attendues (notées
-sur 4 points)
+
 - [ ] créer un praticien,
 - [ ] gérer les personnels médicaux associés à un un ou plusieurs praticiens. Pour les praticiens
 auxquels ils sont associés, ces utilisateurs peuvent:
@@ -38,8 +35,7 @@ auxquels ils sont associés, ces utilisateurs peuvent:
 - [ ] annuler un RDV pour ce praticien,
 - [ ] gérer le cycle de vie des RDV pour ce praticien.
 - [ ] s’authentifier en tant praticien, patient ou personnel médical.
-Les fonctionnalités supplémentaires (notées sur 4
-points)
+
 - [ ] ajouter un document au dossier d’un patient,
 - [ ] consulter le dossier d’un patient (réservé au patient ou aux praticiens),
 - [ ] gérer les indisponibilités d’un praticien : périodes ponctuelles sur lesquelles il ne peut accepter
