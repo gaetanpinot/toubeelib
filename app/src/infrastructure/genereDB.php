@@ -69,7 +69,9 @@ foreign key(status) references status(id)
 
 
 
-$co = new PDO('pgsql:host=toubeelib.db;port=5432;dbname=toubeelib;user=user;password=toto');
+$config= parse_ini_file(__DIR__.'/../../config/pdoConfig.ini');
+$co = new PDO($config['driver'].':host='.$config['host'].';port='.$config['port'].';dbname='.$config['dbname'].';user='.$config['user'].';password='.$config['password']);
+
 $res=$co->exec($drop);
 $res=$co->exec($cspecialite);
 $res=$co->exec($cstatus);

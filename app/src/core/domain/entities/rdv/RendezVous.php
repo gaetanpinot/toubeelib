@@ -24,6 +24,10 @@ class RendezVous extends Entity
     protected string $patientId;
 
     protected int $status;
+    public function setStatus(int $status)
+    {
+        $this->status = $status;
+    }
 
 
     public function getDateHeure(): \DateTimeImmutable

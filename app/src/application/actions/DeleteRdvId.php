@@ -20,8 +20,13 @@ class DeleteRdvId extends AbstractAction
 
         $status = 200;
         try {
+<<<<<<< HEAD
+            $this->serviceRdv->annulerRendezVous($args['id']);
+            $data = [];
+=======
             $rdv = $this->serviceRdv->annulerRendezVous($args['id']);
             $rs = JsonRenderer::render($rs,201, GetRdvId::ajouterLiensRdv($rdv, $rq));
+>>>>>>> 768fe3f9c1108061337a0c5efaf30590036df058
         } catch (ServiceRDVInvalidDataException $e) {
             throw new HttpNotFoundException($rq,$e->getMessage());
         }catch (ServiceOperationInvalideException $e){

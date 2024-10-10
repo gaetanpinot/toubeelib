@@ -17,7 +17,6 @@ use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
 class ServiceRDV implements ServiceRDVInterface
-
 {
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
@@ -101,6 +100,7 @@ class ServiceRDV implements ServiceRDVInterface
     }
 
     /*string $praticienID*/
+
     public function annulerRendezVous(string $id ): RdvDTO
     {
         try {
@@ -117,7 +117,6 @@ class ServiceRDV implements ServiceRDVInterface
             throw new ServiceRDVInvalidDataException($e->getMessage());
         }
     }
-
 
     /* string $id, string $praticienId, string $patientId, string $specialite, \DateTimeImmutable $dateHeure */
     public function modifRendezVous(InputRdvDto $inputRdv) : RdvDTO {
