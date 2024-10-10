@@ -16,9 +16,6 @@ use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
-use MonologLogger;
-use MonologHandlerStreamHandler;
-
 class ServiceRDV implements ServiceRDVInterface
 
 {
