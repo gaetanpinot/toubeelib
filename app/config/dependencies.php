@@ -9,6 +9,9 @@ use toubeelib\core\services\rdv\ServiceRDV;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\infrastructure\repositories\PgPraticienRepository;
 use toubeelib\infrastructure\repositories\PgRdvRepository;
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 
 return [
@@ -34,8 +37,11 @@ return [
         $config= parse_ini_file($c->get('db.config'));
         return new PDO($config['driver'].':host='.$config['host'].';port='.$config['port'].';dbname='.$config['dbname'].';user='.$config['user'].';password='.$config['password']);
     },
-    
 
+
+    StreamHandler::class => DI\create(StreamHandler::class)->constructor(DI\get('logs.dir')),
+    
+    Logger::class => DI\create(Logger::class)->constructor('Toubeelib_logger', [DI\get(StreamHandler::class)])
 
 
 ];
