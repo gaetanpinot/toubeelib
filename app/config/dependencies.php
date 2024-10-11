@@ -17,8 +17,8 @@ use Monolog\Handler\StreamHandler;
 return [
 
     //Repository interface
-    PraticienRepositoryInterface::class => DI\create(PgPraticienRepository::class)->constructor(DI\get('pdo.commun')),
-    RdvRepositoryInterface::class => DI\create(PgRdvRepository::class)->constructor(DI\get('pdo.commun')),
+    PraticienRepositoryInterface::class => DI\autowire(PgPraticienRepository::class),
+    RdvRepositoryInterface::class => DI\autowire(PgRdvRepository::class),
     // PraticienRepositoryInterface::class => DI\create(ArrayPraticienRepository::class)->constructor(),
     // RdvRepositoryInterface::class => DI\create(ArrayRdvRepository::class)->constructor(),
 
@@ -28,9 +28,8 @@ return [
     // PgRdvRepository::class=>DI\create(PgRdvRepository::class)->constructor(DI\get('pdo.commun')),
 
     //Services
-    ServicePraticienInterface::class => DI\create(ServicePraticien::class)->constructor(DI\get(PraticienRepositoryInterface::class)),
-    ServiceRDVInterface::class => DI\create(ServiceRDV::class)->constructor(DI\get(ServicePraticienInterface::class),
-        DI\get(RdvRepositoryInterface::class)),
+    ServicePraticienInterface::class => DI\autowire(ServicePraticien::class),
+    ServiceRDVInterface::class => DI\autowire(ServiceRDV::class),
 
     //PDO
     'pdo.commun' => function(ContainerInterface $c){
