@@ -19,7 +19,7 @@ class RendezVous extends Entity
     public const  PAS_PAYE = 5;
 
     protected \DateTimeImmutable $dateHeure;
-    protected string $praticienID;
+    protected string $praticienId;
     protected string $specialite;
     protected string $patientId;
 
@@ -35,9 +35,9 @@ class RendezVous extends Entity
         return $this->dateHeure;
     }
 
-    public function getPraticienID(): string
+    public function getPraticienId(): string
     {
-        return $this->praticienID;
+        return $this->praticienId;
     }
 
     public function getSpecialite(): string
@@ -45,7 +45,7 @@ class RendezVous extends Entity
         return $this->specialite;
     }
 
-    public function getPatientID(): string
+    public function getPatientId(): string
     {
         return $this->patientId;
     }
@@ -54,20 +54,16 @@ class RendezVous extends Entity
     {
         return $this->status;
     }
-    public function getPracticienId(): string
-    {
-        return $this->praticienID;
-    }
 
     /**
      * $r1 = new RendezVous('p1', 'pa1', 'A', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:00') );
      *       $r1->setID('r1');
      * @param mixed $status
      */
-    public function __construct(string $praticienID, string $patientID, string $specialite, \DateTimeImmutable $dateHeure, $status = RendezVous::MAINTENU)
+    public function __construct(string $praticienId, string $patientId, string $specialite, \DateTimeImmutable $dateHeure, $status = RendezVous::MAINTENU)
     {
-        $this->praticienID = $praticienID;
-        $this->patientID = $patientID;
+        $this->praticienId = $praticienId;
+        $this->patientId = $patientId;
         $this->dateHeure = $dateHeure;
         $this->specialite = $specialite;
         $this->status = $status;

@@ -38,7 +38,7 @@ class ServiceRDV implements ServiceRDVInterface
         } catch (RepositoryEntityNotFoundException $e) {
             throw new ServiceRDVInvalidDataException('invalid RDV ID');
         }
-        $praticien = $this->servicePraticien->getPraticienById($rdv->getPracticienId());
+        $praticien = $this->servicePraticien->getPraticienById($rdv->getPraticienId());
         return $rdv->toDTO($praticien);
 
     }
@@ -52,12 +52,12 @@ class ServiceRDV implements ServiceRDVInterface
         $rdv->setId($id);
 
         try {
-            $praticien = $this->servicePraticien->getPraticienById($rdv->getPraticienID());
+            $praticien = $this->servicePraticien->getPraticienById($rdv->getPraticienId());
             if ($praticien->specialiteLabel != $this->servicePraticien->getSpecialiteById($rdv->getSpecialite())->label) {
                 throw new \Exception($praticien->specialiteLabel . "=!" . $rdv->getSpecialite());
             }
 
-            if (!in_array($rdv->getDateHeure(), $this->getListeDisponibilite($rdv->getPraticienID()))) {
+            if (!in_array($rdv->getDateHeure(), $this->getListeDisponibilite($rdv->getPraticienId()))) {
                 throw new \Exception("Praticien indisponible");
             }
         } catch (\Exception $e) {
@@ -77,7 +77,6 @@ class ServiceRDV implements ServiceRDVInterface
             if ($rdv->status != RendezVous::ANNULE) {
                 $rr= $rdv->dateHeure->format('Y-m-d H:i');
                 return $rr;
-
             }
         }, $listeRDV);
         $startDate = new \DateTimeImmutable("now");
@@ -126,26 +125,29 @@ class ServiceRDV implements ServiceRDVInterface
 
         //praticien du nouveau rdv
         $praticien = $this->servicePraticien->getPraticienById($inputRdv->getPraticienId());
-
-        if ($rdvOld->getDateHeure() != $inputRdv->getDateHeure() || $rdvOld->getPracticienId() != $inputRdv->getPraticienId() ) {
+        
+        if ($rdvOld->getStatus() == RendezVous::ANNULE) {
+            throw new \Exception("Impossible de changer les informations d'un rdv annulé");
+        }
+        
+        if ($rdvOld->getDateHeure() != $inputRdv->getDateHeure() || $rdvOld->getSpecialite() != $inputRdv->getSpecialite() ) {
             
-            $this->supprimerRendezVous($inputRdv->getId()); 
+            $this->annulerRendezVous($inputRdv->getId()); 
             $res = $this->creerRendezvous($inputRdv);
+            $this->rdvRepository->modifierRdv(new RendezVous($inputRdv->getPraticienId(), $inputRdv->getPatientId(), $inputRdv->getSpecialite(), $inputRdv->getDateHeure(),$rdvOld->getStatus()));
             $res->status = $rdvOld->getStatus();
             return $res;
         } else {
             if ($praticien->specialiteLabel != $this->servicePraticien->getSpecialiteById($rdvOld->getSpecialite())->label) {
                 throw new \Exception($praticien->specialiteLabel . "=!" . $rdvOld->getSpecialite());
             }
-            //$this->rdvRepository->setAttribute($rdvOld->getId(), "specialiteLabel",$inputRdv->getSpecialite());
-            //$this->rdvRepository->setAttribute($rdvOld->getId(), "patientId",$inputRdv->getPatientId());
-            $rdvOld->patientId = $inputRdv->getPatientId();
+            $this->rdvRepository->modifierRdv(new RendezVous($inputRdv->getPraticienId(), $inputRdv->getPatientId(), $inputRdv->getSpecialite(), $inputRdv->getDateHeure(),$rdvOld->getStatus()));
 
-            
-            
-            $rdvOld->specialiteLabel = $inputRdv->getSpecialite();
+
+            //$rdvOld->specialiteLabel = $inputRdv->getSpecialite();
             return $rdvOld->toDTO($praticien);
         }
+        
     }
 
 }
