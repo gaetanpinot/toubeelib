@@ -2,6 +2,7 @@
 
 namespace toubeelib\core\services\rdv;
 
+use DI\Container;
 use DateInterval;
 use DateTimeImmutable;
 use Error;
@@ -13,6 +14,7 @@ use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\services\ServiceOperationInvalideException;
 use toubeelib\core\services\praticien\ServicePraticien;
+use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
@@ -20,15 +22,17 @@ class ServiceRDV implements ServiceRDVInterface
 {
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
+    private string $dateFormat;
 
     public const INTERVAL = 30;
     public const HDEBUT = [9, 00];
     public const HFIN = [17, 30];
 
-    public function __construct(ServicePraticien $servicePraticien, RdvRepositoryInterface $rdvRepository)
+    public function __construct(Container $cont)
     {
-        $this->rdvRepository = $rdvRepository;
-        $this->servicePraticien = $servicePraticien;
+        $this->rdvRepository = $cont->get(RdvRepositoryInterface::class);
+        $this->servicePraticien = $cont->get(ServicePraticienInterface::class);
+        $this->dateFormat = $cont->get('date.format');
     }
 
     public function getRdvById(string $id): RdvDTO
@@ -75,7 +79,7 @@ class ServiceRDV implements ServiceRDVInterface
         $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
         $listeRDVHorraires = array_map(function ($rdv) {
             if ($rdv->status != RendezVous::ANNULE) {
-                $rr= $rdv->dateHeure->format('Y-m-d H:i');
+                $rr= $rdv->dateHeure->format($this->dateFormat);
                 return $rr;
             }
         }, $listeRDV);
@@ -86,7 +90,7 @@ class ServiceRDV implements ServiceRDVInterface
         while ($startDate->diff($endDate)->format('%d') > 0) {
             while ($startDate->format('U') % 86400 <= ServiceRDV::HFIN[0] * 3600 + ServiceRDV::HFIN[1] * 60) {
 
-                if (!in_array($startDate->format('Y-m-d H:i'), $listeRDVHorraires)) {
+                if (!in_array($startDate->format($this->dateFormat), $listeRDVHorraires)) {
 
                     $results[] = $startDate;
                 }

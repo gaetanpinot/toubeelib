@@ -1,6 +1,7 @@
 <?php
 namespace toubeelib\infrastructure\repositories;
 
+use DI\Container;
 use PDO;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
@@ -11,8 +12,8 @@ class PgRdvRepository implements  RdvRepositoryInterface{
 
     protected PDO $pdo;
 
-    public function __construct(PDO $pdo){
-        $this->pdo=$pdo;
+    public function __construct(Container $cont){
+        $this->pdo=$cont->get('pdo.commun');
     }
 
     // id UUID,
@@ -150,7 +151,6 @@ class PgRdvRepository implements  RdvRepositoryInterface{
             praticienId = :praticienId,
             status = :status
             where id = :id;';
-
             $val=[
                 'id' => $rdv->getId(),
                 'date' => $rdv->getDateHeure()->format('Y-m-d H:i'),

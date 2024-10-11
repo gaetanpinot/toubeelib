@@ -17,9 +17,9 @@ n’est pas rappelé.
 - [ ] API respectant les principes RESTful : désigation des ressources (URIs), opérations et méthodes
 HTTP adéquates, status de retours corrects, données échangées au format JSON, incluant des
 liens HATEOAS,
-- [ ] architecture basée sur les principes d’architecture Hexagonale et d’inversion de dépendances,
+- [x] architecture basée sur les principes d’architecture Hexagonale et d’inversion de dépendances,
 en particulier pour les bases de données,
-- [ ] utilisation d’un conteneur d’injection de dépendances,
+- [x] utilisation d’un conteneur d’injection de dépendances,
 - [x] traitement des erreurs et exceptions,
 - [ ] traitement des headers CORS,
 - [ ] authentification à l’aide de tokens JWT,

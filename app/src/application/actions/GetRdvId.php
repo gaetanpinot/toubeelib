@@ -35,7 +35,6 @@ class GetRdvId extends AbstractAction
             $data=GetRdvId::ajouterLiensRdv($rdvs,$rq);
             $rs = JsonRenderer::render($rs, 200, $data);
 
-
         } catch (ServiceRDVInvalidDataException $e) {
             throw new HttpNotFoundException($rq, $e->getMessage());
         }catch (\Exception $e){

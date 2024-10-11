@@ -1,6 +1,7 @@
 <?php
 namespace toubeelib\infrastructure\repositories;
 
+use DI\Container;
 use toubeelib\core\repositoryInterfaces\RepositoryInternalException;
 use toubeelib\core\domain\entities\praticien\Praticien;
 use toubeelib\core\domain\entities\praticien\Specialite;
@@ -12,9 +13,8 @@ class PgPraticienRepository implements PraticienRepositoryInterface{
 
     protected PDO $pdo;
 
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo=$pdo;
+    public function __construct(Container $cont){
+        $this->pdo=$cont->get('pdo.commun');
     }
     public function getSpecialiteById(string $id): Specialite
     {
