@@ -235,7 +235,7 @@ for($i=0;$i<$nbRdv;$i){
 		'praticienId' => $praticienIds[$faker->numberBetween(0,count($praticienIds)-1)],
 		'status' => $statusIds[$faker->numberBetween(0,count($statusIds)-1)]
 	];
-	$resultVerif=1;
+	$resultVerif=1;	
 	if($val['status']!=RendezVous::ANNULE){
 		// $resultVerif = $verif->execute($val);
 		$verif->execute(['date'=>$val['date'],'praticienId'=>$val['praticienId'],'annule'=>RendezVous::ANNULE]);

@@ -17,7 +17,7 @@ en particulier pour les bases de données,
 - [x] traitement des erreurs et exceptions,
 - [ ] traitement des headers CORS,
 - [ ] authentification à l’aide de tokens JWT,
-- [ ] utilisation adéquate des mécanismes du framework Slim, notamment les middlewares,
+- [x] utilisation adéquate des mécanismes du framework Slim, notamment les middlewares,
 - [ ] validation et filtrage des données reçues au travers de l’API,
 - [x] utilisation de bases de données distinctes pour les patients, pour les RDV, pour les praticiens et
 ce qui s’y rattache, et pour l’authentification. Ces bases de données pourront éventuellement
