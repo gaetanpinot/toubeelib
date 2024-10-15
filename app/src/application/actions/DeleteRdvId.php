@@ -22,9 +22,12 @@ class DeleteRdvId extends AbstractAction
         try {
             $rdv = $this->serviceRdv->annulerRendezVous($args['id']);
             $rs = JsonRenderer::render($rs,201, GetRdvId::ajouterLiensRdv($rdv, $rq));
+            $this->loger->info('DeleteRdv : '.$args['id'].' rdv supprimé');
         } catch (ServiceRDVInvalidDataException $e) {
+            $this->loger->error('DeleteRdv : '.$args['id'].' : '.$e->getMessage());
             throw new HttpNotFoundException($rq,$e->getMessage());
         }catch (ServiceOperationInvalideException $e){
+            $this->loger->error('DeleteRdv : '.$args['id'].' : '.$e->getMessage());
             throw new HttpBadRequestException($rq, $e->getMessage());
         }
         return $rs;

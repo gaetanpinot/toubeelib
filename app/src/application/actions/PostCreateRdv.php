@@ -48,16 +48,20 @@ class PostCreateRdv extends AbstractAction
             $rs = JsonRenderer::render($rs, 201, GetRdvId::ajouterLiensRdv($dtoRendezVousCree,$rq));
             // entrée dans le header avec le nom Location et pour valeur la route vers le rdv crée
             $rs = $rs->withAddedHeader("Location", $routeParser->urlFor("getRdv", ["id" => $dtoRendezVousCree->id]));
+            $this->loger->info('CreateRdv : '.$args['id']);
 
             return $rs;
         } catch (NestedValidationException $e) {
+            $this->loger->error('CreateRdv : '.$e->getMessage());
             throw new HttpBadRequestException($rq, $e->getMessage());
         } catch (ServiceRDVInvalidDataException $e) {
+            $this->loger->error('CreateRdv : '.$e->getMessage());
             throw new HttpBadRequestException($rq, $e->getMessage());
         } catch (\Exception $e) {
+            $this->loger->error('CreateRdv : '.$e->getMessage());
             throw new HttpInternalServerErrorException($rq, $e->getMessage());
-//            throw new HttpInternalServerErrorException($rq, "Erreur serveur");
         } catch (Error $e) {
+            $this->loger->error('CreateRdv : '.$e->getMessage());
             throw new HttpInternalServerErrorException($rq,$e->getMessage());
         }
 

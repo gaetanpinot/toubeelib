@@ -4,6 +4,7 @@ namespace toubeelib\application\actions;
 
 
 use DI\Container;
+use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
@@ -15,6 +16,8 @@ abstract class AbstractAction
    protected ServicePraticienInterface $servicePraticien; 
     protected string $formatDate;
     protected Container $cont;
+
+    protected Logger $loger;
     /**
      * @param ServiceRDVInterface $srdv
      * @param ServicePraticienInterface $sprt
@@ -25,6 +28,7 @@ abstract class AbstractAction
         $this->serviceRdv = $cont->get(ServiceRDVInterface::class);
         $this->servicePraticien = $cont->get(ServicePraticienInterface::class);
         $this->formatDate = $cont->get('date.format');
+$this->loger = $cont->get(Logger::class);
     }
 
     /**
