@@ -100,7 +100,46 @@ class ServiceRDV implements ServiceRDVInterface
         }
 
         return $results;
+
+        
     }
+
+    // TODO: transferer methode a ServicePraticien
+    public function getListeDisponibiliteDate(string $idPraticien, string $test_start_Date, string $test_end_Date ): array
+    {
+
+        $results = [];
+        $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
+        $listeRDVHorraires = array_map(function ($rdv) {
+            if ($rdv->status != RendezVous::ANNULE) {
+                $rr= $rdv->dateHeure->format($this->dateFormat);
+                return $rr;
+            }
+        }, $listeRDV);
+        $startDate = new \DateTimeImmutable($test_start_Date != null ? $test_start_Date : 'now');
+        $startDate = $startDate->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
+        echo $startDate;
+
+        $endDate = $test_end_Date != null 
+            ? (new \DateTimeImmutable($test_end_Date))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]) 
+            : (new \DateTimeImmutable('now'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1])->add(new DateInterval('P31D'));
+        echo $endDate;
+
+        while ($startDate->diff($endDate)->format('%d') > 0) {
+            while ($startDate->format('U') % 86400 <= ServiceRDV::HFIN[0] * 3600 + ServiceRDV::HFIN[1] * 60) {
+
+                if (!in_array($startDate->format($this->dateFormat), $listeRDVHorraires)) {
+
+                    $results[] = $startDate;
+                }
+                $startDate = $startDate->add(new DateInterval("PT30M"));
+            }
+            $startDate = $startDate->add(new DateInterval('P1D'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
+        }
+
+        return $results;
+    }
+
 
     /*string $praticienID*/
 
