@@ -18,19 +18,37 @@ use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 class GetDisposPraticienDate extends AbstractAction{
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        echo "test action for GetDisposPraticienDate";
+        //echo "test action for GetDisposPraticienDate";
+
+
+        //var_dump($rq->getParsedBody()); 
+
+
         $jsonRdv = $rq->getParsedBody();
 
-        $praticienValidator=Validator::key('id',Validator::stringType()->notEmpty())
-        ->key('test_start_Date', Validator::dateTime($this->formatDate))
-        ->key('test_end_Date', Validator::dateTime($this->formatDate));
+        $status = 200;
+        $champs = ['id', 'test_start_Date', 'test_end_Date'];
 
-        echo "praticien id = ".$jsonRdv["id"];
+        $praticienValidator=Validator::key('praticienId',Validator::stringType()->notEmpty());
 
-        $praticienValidator->assert($jsonRdv);
+        if ($jsonRdv["test_start_Date"] != null) {
+            $praticienValidator = Validator::key('test_start_Date', Validator::dateTime($this->formatDate));
+        } else {
+            $jsonRdv["test_start_Date"] = null;
+        }
+        
+        if ($jsonRdv["test_end_Date"] != null) {
+            $praticienValidator = Validator::key('test_end_Date', Validator::dateTime($this->formatDate));
+        } else {
+            $jsonRdv["test_end_Date"] = null;
+        } 
 
+        
         try{
-            $dispos=$this->serviceRdv->getListeDisponibiliteDate($jsonRdv['id'], $jsonRdv["test_start_Date"], $jsonRdv["test_end_Date"]);
+
+            $praticienValidator->assert($jsonRdv);
+
+            $dispos=$this->serviceRdv->getListeDisponibiliteDate($jsonRdv['praticienId'], $jsonRdv['test_start_Date'], $jsonRdv['test_end_Date'],);
             for($i=0; $i<count($dispos);$i++){
                 $dispos[$i]=$dispos[$i]->format($this->formatDate);
             }

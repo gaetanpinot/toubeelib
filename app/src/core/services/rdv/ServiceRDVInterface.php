@@ -15,5 +15,4 @@ interface ServiceRDVInterface
     public function modifRendezVous(InputRdvDto $rdv): RdvDTO;
     public function getListeDisponibilite(string $id): array;
     public function getListeDisponibiliteDate(string $id, string $test_start_Date, string $test_end_Date): array;
-
 }
