@@ -18,11 +18,14 @@ use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 class GetDisposPraticienDate extends AbstractAction{
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
+        echo "test action for GetDisposPraticienDate";
         $jsonRdv = $rq->getParsedBody();
 
         $praticienValidator=Validator::key('id',Validator::stringType()->notEmpty())
         ->key('test_start_Date', Validator::dateTime($this->formatDate))
         ->key('test_end_Date', Validator::dateTime($this->formatDate));
+
+        echo "praticien id = ".$jsonRdv["id"];
 
         $praticienValidator->assert($jsonRdv);
 

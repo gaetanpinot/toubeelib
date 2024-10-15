@@ -26,11 +26,11 @@ return function (\Slim\App $app): \Slim\App {
     $app->get('/praticiens/{id}/dispos[/]', \toubeelib\application\actions\GetDisposPraticien::class)->setName('disposPraticien');
 
     // TODO get dispos with date
-    $app->post('/praticiens/{id}/dispos_date[/]',  \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate');
+    $app->post('/praticiens/dispos_date[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate');
 
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
-    throw new HttpNotFoundException($request);
+    throw new HttpNotFoundException($request);  
 });     
 
 

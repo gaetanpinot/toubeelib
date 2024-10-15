@@ -107,6 +107,7 @@ class ServiceRDV implements ServiceRDVInterface
     // TODO: transferer methode a ServicePraticien
     public function getListeDisponibiliteDate(string $idPraticien, string $test_start_Date, string $test_end_Date ): array
     {
+        echo "test for getListeDisponibiliteDate";
 
         $results = [];
         $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
