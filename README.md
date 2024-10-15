@@ -1,5 +1,11 @@
 # Toubeelib
 
+## Config
+Fichier de config à créer (copier le fichier .dist existant en enlevant .dist):
+- `./toubeelib.env`
+- `./toubeelibdb.env`
+- `./app/config/pdoConfig.ini`
+Les mots de passes doivent être consistant dans la db
 ## Todolist:
 IUT Nancy-Charlemagne – BUT Informatique
 S5 – DWM
@@ -11,9 +17,9 @@ n’est pas rappelé.
 - [ ] API respectant les principes RESTful : désigation des ressources (URIs), opérations et méthodes
 HTTP adéquates, status de retours corrects, données échangées au format JSON, incluant des
 liens HATEOAS,
-- [ ] architecture basée sur les principes d’architecture Hexagonale et d’inversion de dépendances,
+- [x] architecture basée sur les principes d’architecture Hexagonale et d’inversion de dépendances,
 en particulier pour les bases de données,
-- [ ] utilisation d’un conteneur d’injection de dépendances,
+- [x] utilisation d’un conteneur d’injection de dépendances,
 - [x] traitement des erreurs et exceptions,
 - [ ] traitement des headers CORS,
 - [ ] authentification à l’aide de tokens JWT,
@@ -38,3 +44,4 @@ précisant la spécialité concernée et le type de consultation (présentiel, t
 - [ ] gérer les indisponibilités d’un praticien : périodes ponctuelles sur lesquelles il ne peut accepter
 de RDV,
 - [ ] gérer les disponibilités d’un praticien : jours, horaires et durée des RDV pour chaque praticien,
+

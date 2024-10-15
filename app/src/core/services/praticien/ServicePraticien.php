@@ -3,6 +3,7 @@
 namespace toubeelib\core\services\praticien;
 
 // ! Not use
+use DI\Container;
 use Respect\Validation\Exceptions\NestedValidationException;
 use toubeelib\core\domain\entities\praticien\Praticien;
 // ! Not use
@@ -18,9 +19,9 @@ class ServicePraticien implements ServicePraticienInterface
 {
     private PraticienRepositoryInterface $praticienRepository;
 
-    public function __construct(PraticienRepositoryInterface $praticienRepository)
+    public function __construct(Container $cont)
     {
-        $this->praticienRepository = $praticienRepository;
+        $this->praticienRepository = $cont->get(PraticienRepositoryInterface::class);
     }
 
     public function createPraticien(InputPraticienDTO $p): PraticienDTO
