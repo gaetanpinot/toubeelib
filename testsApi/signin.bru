@@ -1,0 +1,18 @@
+meta {
+  name: /signin
+  type: http
+  seq: 9
+}
+
+post {
+  url: http://localhost:6080/signin
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id":"7b1291d3-b911-36d3-9dfd-f4d8d769bdad",
+    "password": "bernadette.laine"
+  }
+}
