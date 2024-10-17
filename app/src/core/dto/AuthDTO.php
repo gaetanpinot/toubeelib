@@ -2,6 +2,8 @@
 
 namespace toubeelib\core\dto;
 
+use toubeelib\core\domain\entities\User;
+
 class AuthDTO extends DTO{
     protected string $id;
     protected int $role;
@@ -22,6 +24,11 @@ class AuthDTO extends DTO{
         }
     public function setRole(int $role){
         $this->role = $role;
+    }
+
+    public static function fromUser(User $user){
+        $this->id = $user->id;
+        $this->role = $user->role;
     }
 
 }

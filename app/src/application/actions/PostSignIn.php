@@ -39,6 +39,7 @@ class PostSignIn extends AbstractAction
 
             $authDto = $this->authProvider->signin(new CredentialsDTO( $jsonSignIn['id'], $jsonSignIn['password'] ) );
             $rs = $rs->withHeader('access_token', $authDto->atoken)->withStatus(201);
+            $this->loger->info("Sign in de l'utilisateur " .$jsonSignIn['id']);
 
             return $rs;
         } catch (NestedValidationException $e) {

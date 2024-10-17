@@ -16,6 +16,9 @@ use toubeelib\infrastructure\repositories\PgRdvRepository;
 use toubeelib\providers\auth\AuthnProviderInterface;
 use toubeelib\providers\auth\JWTAuthnProvider;
 use toubeelib\providers\auth\JWTManager;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\LineFormatter;
 
 
 return [
@@ -51,7 +54,18 @@ return [
     JWTManager::class=> DI\autowire(JWTManager::class),
     AuthnProviderInterface::class => DI\autowire(JWTAuthnProvider::class),
     
+    StreamHandler::class => DI\create(StreamHandler::class)
+        ->constructor(DI\get('logs.dir'), Logger::DEBUG)
+        ->method('setFormatter', DI\get(LineFormatter::class)),
 
+    
+    LineFormatter::class => function() {
+        $dateFormat = "Y-m-d H:i"; // Format de la date que tu veux
+        $output = "[%datetime%] %channel%.%level_name%: %message% %context%\n"; // Format des logs
+        return new LineFormatter($output, $dateFormat);
+    },
+    
+    Logger::class => DI\create(Logger::class)->constructor('Toubeelib_logger', [DI\get(StreamHandler::class)])
 
 
 ];

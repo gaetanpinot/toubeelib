@@ -10,23 +10,24 @@ use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 
 class PgAuthRepository implements AuthRepositoryInterface{
     protected \PDO $pdo;
-    protected Logger $log;
+    protected Logger $loger;
 
     public function __construct(Container $co)
     {
         $this->pdo=$co->get('pdo.auth');
-        $this->log = $co->get(
+        $this->loger = $co->get(Logger::class);
+        
     }
     public function getUser(string $id): User
     {
         try{
-        $query='select * from users where user.id=:id;';
+        $query='select * from users where users.id=:id;';
         $rq=$this->pdo->prepare($query);
         $rq->execute(['id'=>$id]);
         $user = $rq->fetch();
             return new User($user['id'],$user['email'], $user['password'], $user['role']);
         }catch(\PDOException $e){
-
+            $this->loger->error("PgAuthRep ". $e->getMessage());
             throw new RepositoryEntityNotFoundException($e->getMessage());
         }
     }

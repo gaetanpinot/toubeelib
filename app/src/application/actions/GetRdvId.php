@@ -26,24 +26,23 @@ class GetRdvId extends AbstractAction
             ]
         ];
     }
-    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
-    {
+    public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface {
+
         $status = 200;
         try {
             $rdvs = $this->serviceRdv->getRdvById($args['id']);
-
             $data=GetRdvId::ajouterLiensRdv($rdvs,$rq);
             $rs = JsonRenderer::render($rs, 200, $data);
+            $this->loger->info('GetRdv du rendez vous : '.$args['id']);
 
         } catch (ServiceRDVInvalidDataException $e) {
+            $this->loger->error('GetRdv : '.$args['id'].' : '.$e->getMessage());
             throw new HttpNotFoundException($rq, $e->getMessage());
         }catch (\Exception $e){
+            $this->loger->error('GetRdv : '.$args['id'].' : '.$e->getMessage());
             throw new HttpInternalServerErrorException($rq,$e->getMessage());
         }
-//        $rs->getBody()->write(json_encode($data));
-//        return $rs
-//            ->withHeader('Content-Type', 'application/json')
-//            ->withStatus($status);
+
 
         return $rs;
     }
