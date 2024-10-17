@@ -1,5 +1,5 @@
 meta {
-  name: /signin
+  name: signin bernadette
   type: http
   seq: 9
 }
@@ -15,4 +15,9 @@ body:json {
     "id":"7b1291d3-b911-36d3-9dfd-f4d8d769bdad",
     "password": "bernadette.laine"
   }
+}
+
+script:post-response {
+  bru.setVar("access-token",res.headers['access-token']);
+  
 }
