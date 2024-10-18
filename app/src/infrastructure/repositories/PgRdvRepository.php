@@ -2,6 +2,7 @@
 namespace toubeelib\infrastructure\repositories;
 
 use DI\Container;
+use Monolog\Logger;
 use PDO;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
@@ -11,9 +12,12 @@ use toubeelib\core\repositoryInterfaces\RepositoryInternalException;
 class PgRdvRepository implements  RdvRepositoryInterface{
 
     protected PDO $pdo;
+    protected Logger $loger;
 
     public function __construct(Container $cont){
         $this->pdo=$cont->get('pdo.commun');
+        $this->loger = $cont->get(Logger::class)->withName('PgRdvRepository');
+
     }
 
     // id UUID,
@@ -111,6 +115,7 @@ class PgRdvRepository implements  RdvRepositoryInterface{
 
 
             }else{
+                $this->loger->error("");
                 throw new RepositoryEntityNotFoundException("Praticien $id not found");
             }
 

@@ -39,12 +39,15 @@ class PatchRdv extends AbstractAction
             $inputRdv->setId($data['id']);
             $dto=$this->serviceRdv->modifRendezVous($inputRdv);
             $data=GetRdvId::ajouterLiensRdv($dto, $rq);
-            return JsonRenderer::render($rs, 201, $data);
+            $this->loger->info('PatchRdv: '.$args['id'].' : ');
+            $rs = JsonRenderer::render($rs, 201, $data);
 
 
         }catch(NestedValidationException $e){
+            $this->loger->error('PatchRdv : '.$args['id'].' : '.$e->getMessage());
             throw new HttpBadRequestException($rq,$e->getMessage());
         }catch(ServiceRDVInvalidDataException $e){
+            $this->loger->error('PatchRdv: '.$args['id'].' : '.$e->getMessage());
             throw new HttpBadRequestException($rq,$e->getMessage());
         }
 

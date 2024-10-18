@@ -4,6 +4,7 @@ use toubeelib\application\actions\DeleteRdvId;
 use toubeelib\application\actions\GetRdvId;
 use toubeelib\application\actions\PatchRdv;
 use toubeelib\application\actions\PostCreateRdv;
+use toubeelib\application\actions\PostSignIn;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\application\actions\GetDisposPraticien;
 use toubeelib\application\actions\GetDisposPraticienDate;
@@ -17,8 +18,8 @@ return [
     PatchRdv::class => DI\autowire(),
     PostCreateRdv::class => DI\autowire(),
     DeleteRdvId::class => DI\autowire(),
-
     GetDisposPraticienDate::class => DI\autowire(),
+    PostSignIn::class => DI\autowire(),
     // GetDisposPraticien::class=>DI\create(GetDisposPraticien::class)->constructor(DI\Container::class),
 
 

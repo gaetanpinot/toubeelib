@@ -2,6 +2,8 @@
 namespace toubeelib\application\actions;
 
 
+use DateTime;
+use DateTimeImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Exceptions\NestedValidationException;
@@ -24,31 +26,29 @@ class GetDisposPraticienDate extends AbstractAction{
         //var_dump($rq->getParsedBody()); 
 
 
-        $jsonRdv = $rq->getParsedBody();
+        $jsonDates = $rq->getParsedBody();
 
         $status = 200;
-        $champs = ['id', 'test_start_Date', 'test_end_Date'];
+        $champs = ['id', 'start_Date', 'end_Date'];
 
-        $praticienValidator=Validator::key('praticienId',Validator::stringType()->notEmpty());
+        $praticienIdValidator = Validator::key('id',Validator::Uuid()->notEmpty());
+        $praticienValidator = Validator::key('start_date', Validator::dateTime($this->formatDate)->notEmpty())
+        ->key('end_date', Validator::dateTime($this->formatDate)->notEmpty());
 
-        if ($jsonRdv["test_start_Date"] != null) {
-            $praticienValidator = Validator::key('test_start_Date', Validator::dateTime($this->formatDate));
-        } else {
-            $jsonRdv["test_start_Date"] = null;
-        }
-        
-        if ($jsonRdv["test_end_Date"] != null) {
-            $praticienValidator = Validator::key('test_end_Date', Validator::dateTime($this->formatDate));
-        } else {
-            $jsonRdv["test_end_Date"] = null;
-        } 
 
         
         try{
 
-            $praticienValidator->assert($jsonRdv);
+            $praticienValidator->assert($jsonDates);
+            $praticienIdValidator->assert($args);
+            $dateDebut = DateTimeImmutable::createFromFormat($this->formatDate,$jsonDates['start_date']);
+            $dateFin = DateTimeImmutable::createFromFormat($this->formatDate,$jsonDates['end_date']);
+            if($dateFin->getTimestamp()<= $dateDebut->getTimestamp()){
+                throw new HttpBadRequestException($rq, "Date fin plus petite que Date debut");
+            }
+            
 
-            $dispos=$this->serviceRdv->getListeDisponibiliteDate($jsonRdv['praticienId'], $jsonRdv['test_start_Date'], $jsonRdv['test_end_Date'],);
+            $dispos=$this->serviceRdv->getListeDisponibiliteDate($args['id'], $jsonDates['start_date'], $jsonDates['end_date'],);
             for($i=0; $i<count($dispos);$i++){
                 $dispos[$i]=$dispos[$i]->format($this->formatDate);
             }

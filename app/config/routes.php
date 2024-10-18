@@ -4,6 +4,8 @@ declare(strict_types=1);
 use Slim\Exception\HttpNotFoundException;
 
 
+use toubeelib\application\actions\GetDisposPraticien;
+use toubeelib\application\actions\PostSignIn;
 
 return function (\Slim\App $app): \Slim\App {
 
@@ -29,9 +31,15 @@ return function (\Slim\App $app): \Slim\App {
     $app->get('/praticiens/{id}/dispos_date[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate');
 
 
-$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
-    throw new HttpNotFoundException($request);  
-});     
+    //auth
+    $app->post('/signin[/]', PostSignIn::class)->setName('signIn');
+
+    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
+        throw new HttpNotFoundException($request);
+    });    
+    $app->options('/{routes:.+}', function ($request, $response, $args) {
+        return $response;
+    });
 
 
     return $app;
