@@ -11,6 +11,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpUnauthorizedException;
+use toubeelib\providers\auth\AuthInvalidException;
 use toubeelib\providers\auth\AuthnProviderInterface;
 
 class AuthnMiddleware implements MiddlewareInterface{
@@ -32,6 +33,10 @@ class AuthnMiddleware implements MiddlewareInterface{
 			return $rs;
 		}
 		if(!$rq->hasHeader("Authorization")){
+		foreach($rq->getHeaders() as $s){
+			$this->loger->error($s[0]);
+			}
+
 			throw new HttpUnauthorizedException($rq, "Authorization manquante, veuillez vous enregistrer");
 		}
 		try{
@@ -42,9 +47,9 @@ class AuthnMiddleware implements MiddlewareInterface{
 			}
 			$token = $token[0];
 			$user = $this->authProvider->getSignedInUser($token);
-		}catch (Exception $e){
+		}catch (AuthInvalidException $e){
 			$this->loger->error($e->getMessage());
-			throw new HttpUnauthorizedException($rq, "Erreur lors de l'authentification veuillez verifier votre token");
+			throw new HttpUnauthorizedException($rq, $e->getMessage());
 		}
 		catch(\Error $e){
 			$this->loger->error($e->getMessage());

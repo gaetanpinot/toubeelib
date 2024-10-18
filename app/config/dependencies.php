@@ -14,6 +14,7 @@ use toubeelib\infrastructure\repositories\PgAuthRepository;
 use toubeelib\infrastructure\repositories\PgPraticienRepository;
 use toubeelib\infrastructure\repositories\PgRdvRepository;
 use toubeelib\middlewares\AuthnMiddleware;
+use toubeelib\middlewares\CorsMiddleware;
 use toubeelib\providers\auth\AuthnProviderInterface;
 use toubeelib\providers\auth\JWTAuthnProvider;
 use toubeelib\providers\auth\JWTManager;
@@ -71,6 +72,7 @@ return [
 
     //midleware 
     AuthnMiddleware::class => DI\autowire(AuthnMiddleware::class),
+    CorsMiddleware::class => DI\autowire(CorsMiddleware::class),
 
 
 ];

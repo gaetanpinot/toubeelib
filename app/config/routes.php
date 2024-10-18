@@ -30,7 +30,9 @@ return function (\Slim\App $app): \Slim\App {
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
         throw new HttpNotFoundException($request);
     });    
-
+    $app->options('/{routes:.+}', function ($request, $response, $args) {
+        return $response;
+    });
 
 
     return $app;

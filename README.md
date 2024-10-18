@@ -14,17 +14,17 @@ Toubeelib, rendu attendu
 Ce document décrit de façon détaillée le rendu attendu pour le projet Toubeelib. Le sujet du projet
 n’est pas rappelé.
 ## Toubeelib, architecture générale (noté sur 10 points) :
-- [ ] API respectant les principes RESTful : désigation des ressources (URIs), opérations et méthodes
+- [x] API respectant les principes RESTful : désigation des ressources (URIs), opérations et méthodes
 HTTP adéquates, status de retours corrects, données échangées au format JSON, incluant des
 liens HATEOAS,
 - [x] architecture basée sur les principes d’architecture Hexagonale et d’inversion de dépendances,
 en particulier pour les bases de données,
 - [x] utilisation d’un conteneur d’injection de dépendances,
 - [x] traitement des erreurs et exceptions,
-- [ ] traitement des headers CORS,
-- [ ] authentification à l’aide de tokens JWT,
-- [ ] utilisation adéquate des mécanismes du framework Slim, notamment les middlewares,
-- [ ] validation et filtrage des données reçues au travers de l’API,
+- [x] traitement des headers CORS,
+- [x] authentification à l’aide de tokens JWT,
+- [x] utilisation adéquate des mécanismes du framework Slim, notamment les middlewares,
+- [x] validation et filtrage des données reçues au travers de l’API,
 - [x] utilisation de bases de données distinctes pour les patients, pour les RDV, pour les praticiens et
 ce qui s’y rattache, et pour l’authentification. Ces bases de données pourront éventuellement
 être gérées dans des conteneurs Docker différents.
