@@ -13,6 +13,7 @@ use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\infrastructure\repositories\PgAuthRepository;
 use toubeelib\infrastructure\repositories\PgPraticienRepository;
 use toubeelib\infrastructure\repositories\PgRdvRepository;
+use toubeelib\middlewares\AuthnMiddleware;
 use toubeelib\providers\auth\AuthnProviderInterface;
 use toubeelib\providers\auth\JWTAuthnProvider;
 use toubeelib\providers\auth\JWTManager;
@@ -65,7 +66,11 @@ return [
         return new LineFormatter($output, $dateFormat);
     },
     
-    Logger::class => DI\create(Logger::class)->constructor('Toubeelib_logger', [DI\get(StreamHandler::class)])
+    Logger::class => DI\create(Logger::class)->constructor('Toubeelib_logger', [DI\get(StreamHandler::class)]),
+
+
+    //midleware 
+    AuthnMiddleware::class => DI\autowire(AuthnMiddleware::class),
 
 
 ];

@@ -1,0 +1,16 @@
+meta {
+  name: mauvaiseToken
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://localhost:6080
+  body: none
+  auth: none
+}
+
+script:post-response {
+  bru.setVar("access-token","res.headers['access-token']");
+  
+}

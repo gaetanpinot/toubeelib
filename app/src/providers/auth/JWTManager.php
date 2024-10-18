@@ -4,6 +4,7 @@ namespace toubeelib\providers\auth;
 use DI\Container;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Monolog\Logger;
 use toubeelib\core\dto\AuthDTO;
 
 class JWTManager{
@@ -11,6 +12,7 @@ class JWTManager{
 	protected int $tempsValidite;
 	protected string $emmeteur, $audience;
 	protected string $key, $algo;
+	protected Logger $loger;
 	
 
 	public function __construct(Container $co)
@@ -21,6 +23,7 @@ class JWTManager{
 		// $this->key = parse_ini_file($co->get('token.key.path'))['JWT_SECRET_KEY'];
 		$this->key = getenv('JWT_SECRET_KEY');
 		$this->algo = $co->get('token.jwt.algo');
+		$this->loger = $co->get(Logger::class);
 
 	}
 
@@ -49,6 +52,11 @@ class JWTManager{
 	}
 
 	public function decodeToken(string $token): array{
+		try{
 		return (array) JWT::decode($token, new Key($this->key, $this->algo));
+		}catch(\Exception $e){
+			// $this->loger->error($e->getMessage());
+			$this->loger->error($e->getMessage());
+		}
 	}
 }

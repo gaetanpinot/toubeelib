@@ -3,6 +3,7 @@
 use DI\ContainerBuilder;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Factory\AppFactory;
+use toubeelib\middlewares\AuthnMiddleware;
 
 
 
@@ -18,9 +19,11 @@ $app = AppFactory::createFromContainer($c);
 
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
+$app->addMiddleware($c->get(AuthnMiddleware::class));
 $app->addErrorMiddleware($c->get('displayErrorDetails'), false, false);
 //    ->getDefaultErrorHandler()
 //    ->forceContentType('application/json')
+
 
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
