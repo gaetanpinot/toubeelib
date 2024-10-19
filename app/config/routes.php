@@ -6,6 +6,7 @@ use Slim\Exception\HttpNotFoundException;
 
 use toubeelib\application\actions\GetDisposPraticien;
 use toubeelib\application\actions\PostSignIn;
+use toubeelib\application\actions\SearchPraticien;
 
 return function (\Slim\App $app): \Slim\App {
 
@@ -24,12 +25,11 @@ return function (\Slim\App $app): \Slim\App {
     })->setName('getPraticien');
     $app->patch('/rdvs/{id}[/]', \toubeelib\application\actions\PatchRdv::class)->setName('patchRdv');
 
-    // TODO get dispos 
     $app->get('/praticiens/{id}/dispos[/]', \toubeelib\application\actions\GetDisposPraticien::class)->setName('disposPraticien');
 
-    // TODO get dispos with date
     $app->get('/praticiens/{id}/dispos_date[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate');
 
+    $app->get('/praticiens/{id}/search[/]', SearchPraticien::class)->setName('searchPraticiens');
 
     //auth
     $app->post('/signin[/]', PostSignIn::class)->setName('signIn');
