@@ -53,9 +53,9 @@ class InputRdvDto extends DTO
         $this->praticienId = $praticienId;
         $this->patientId = $patientId;
         $this->specialite = $specialite;
-            $this->dateHeure = \DateTimeImmutable::createFromFormat('Y-m-d H:i', $dateHeure );
-    if($this->dateHeure == false){
-        throw new ServiceRDVInvalidDataException('format de date invalide');
+        $this->dateHeure = \DateTimeImmutable::createFromFormat('Y-m-d H:i', $dateHeure );
+        if($this->dateHeure == false){
+            throw new ServiceRDVInvalidDataException('format de date invalide');
         }
     }
     /**

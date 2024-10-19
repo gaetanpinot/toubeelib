@@ -110,6 +110,8 @@ class ServiceRDV implements ServiceRDVInterface
         $listeRDV);
     }
 
+    /*string $praticienID*/
+
     public function annulerRendezVous(string $id ): RdvDTO
     {
         try {
