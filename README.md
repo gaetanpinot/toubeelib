@@ -12,9 +12,6 @@ Les mots de passes doivent être consistant dans la db
 IUT Nancy-Charlemagne – BUT Informatique
 S5 – DWM
 Projet Développement Web Serveur avancé :
-Toubeelib, rendu attendu
-Ce document décrit de façon détaillée le rendu attendu pour le projet Toubeelib. Le sujet du projet
-n’est pas rappelé.
 ## Toubeelib, architecture générale (noté sur 10 points) :
 - [x] API respectant les principes RESTful : désigation des ressources (URIs), opérations et méthodes
 HTTP adéquates, status de retours corrects, données échangées au format JSON, incluant des
@@ -31,7 +28,7 @@ en particulier pour les bases de données,
 ce qui s’y rattache, et pour l’authentification. Ces bases de données pourront éventuellement
 être gérées dans des conteneurs Docker différents.
 ## Les fonctionnalités minimales attendues (notées sur 6 points) :
-- [ ] lister/rechercher des praticiens,
+- [x] lister/rechercher des praticiens,
 - [x] lister les disponibilités d’un praticien sur une période donnée (date de début, date de fin),
 - [x] réserver un rendez-vous pour un praticien à une date/heure donnée,
 - [x] annuler un rendez-vous, à la demande d’un patient ou d’un praticien,
