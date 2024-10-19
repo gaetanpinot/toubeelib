@@ -11,6 +11,7 @@ interface ServiceRDVInterface
 
     public function __construct(Container $cont);
     public function getRdvById(string $id): RdvDTO;
-public function creerRendezvous(InputRdvDto $rdv): RdvDTO;
-public function modifRendezVous(InputRdvDto $rdv): RdvDTO;
+    public function creerRendezvous(InputRdvDto $rdv): RdvDTO;
+    public function modifRendezVous(InputRdvDto $rdv): RdvDTO;
+    public function getRdvByPatient(string $id):array;
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Slim\Exception\HttpNotFoundException;
 use \toubeelib\application\actions\GetDisposPraticien;
+use \toubeelib\application\actions;
 
 return function (\Slim\App $app): \Slim\App {
 
@@ -22,6 +23,8 @@ return function (\Slim\App $app): \Slim\App {
     $app->patch('/rdvs/{id}[/]', \toubeelib\application\actions\PatchRdv::class)->setName('patchRdv');
 
     $app->get('/praticiens/{id}/dispos[/]', GetDisposPraticien::class)->setName('disposPraticien');
+
+    $app->get('/patients/{id}/rdvs[/]', actions\GetRdvByPatient::class)->setName('rdvPatient');
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
     throw new HttpNotFoundException($request);

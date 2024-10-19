@@ -102,7 +102,13 @@ class ServiceRDV implements ServiceRDVInterface
         return $results;
     }
 
-    /*string $praticienID*/
+    public function getRDVbyPatient(string $id) : array {
+        $listeRDV = $this->rdvRepository->getRdvByPatient($id);
+        return array_map(function(RendezVous $rdv) {
+                return $rdv->toDTO($this->servicePraticien->getPraticienById($rdv->getPraticienId()));
+            },
+        $listeRDV);
+    }
 
     public function annulerRendezVous(string $id ): RdvDTO
     {
