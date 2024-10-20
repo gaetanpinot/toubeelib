@@ -10,6 +10,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpInternalServerErrorException;
+use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\dto\CredentialsDTO;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
 use toubeelib\providers\auth\AuthnProviderInterface;
@@ -38,8 +39,9 @@ class PostSignIn extends AbstractAction
             //formatage
 
             $authDto = $this->authProvider->signin(new CredentialsDTO( $jsonSignIn['id'], $jsonSignIn['password'] ) );
-            $rs = $rs->withHeader('access_token', $authDto->atoken)->withStatus(201);
+            $rs = $rs->withHeader('access_token', $authDto->atoken);
             $this->loger->info("Sign in de l'utilisateur " .$jsonSignIn['id']);
+            return JsonRenderer::render($rs,201,[]);
 
             return $rs;
         } catch (NestedValidationException $e) {

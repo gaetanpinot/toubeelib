@@ -4,7 +4,8 @@ declare(strict_types=1);
 use Slim\Exception\HttpNotFoundException;
 
 
-use toubeelib\application\actions\GetDisposPraticien;
+
+use toubeelib\application\actions\GetRdvByPatient;
 use toubeelib\application\actions\PostSignIn;
 use toubeelib\application\actions\SearchPraticien;
 
@@ -21,25 +22,27 @@ return function (\Slim\App $app): \Slim\App {
     $app->get("/patients/{id}[/]", function () {
     })->setName('getPatient');
     // TODO get praticiens
-    $app->get("/praticiens/{id}[/]", function () {
-    })->setName('getPraticien');
+    // $app->get("/praticiens/{id}[/]", function () {
+    // })->setName('getPraticien');
     $app->patch('/rdvs/{id}[/]', \toubeelib\application\actions\PatchRdv::class)->setName('patchRdv');
 
     $app->get('/praticiens/{id}/dispos[/]', \toubeelib\application\actions\GetDisposPraticien::class)->setName('disposPraticien');
 
     $app->get('/praticiens/{id}/dispos_date[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate');
 
-    $app->get('/praticiens/{id}/search[/]', SearchPraticien::class)->setName('searchPraticiens');
+    $app->get( '/praticiens/search[/]', SearchPraticien::class)->setName('searchPraticiens');
 
     //auth
     $app->post('/signin[/]', PostSignIn::class)->setName('signIn');
 
-    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
-        throw new HttpNotFoundException($request);
-    });    
+    $app->get('/patients/{id}/rdvs[/]', GetRdvByPatient::class)->setName('rdvPatient');
+
     $app->options('/{routes:.+}', function ($request, $response, $args) {
         return $response;
     });
+    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
+        throw new HttpNotFoundException($request);
+    });    
 
 
     return $app;

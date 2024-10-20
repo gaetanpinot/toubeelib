@@ -126,6 +126,48 @@ class PgRdvRepository implements  RdvRepositoryInterface{
         }
     }
 
+    public function getRdvByPatient(string $id): array {
+        try{
+            $query = "
+            select 
+                rdv.id as id,
+                rdv.patientid as patientid,
+                rdv.praticienid as praticienid,
+                rdv.date as date, 
+                praticien.specialite as specialite 
+            from 
+                rdv,
+                praticien,
+                specialite 
+            where 
+                rdv.praticienId=praticien.id 
+                and praticien.specialite=specialite.id 
+                and rdv.patientid= :id;";
+            $rdvs=$this->pdo->prepare($query);
+            $rdvs->execute(['id'=> $id]);
+            $result = $rdvs->fetchAll();
+
+            if($result){
+                $retour = [];
+                foreach($result as $r){
+                    $rdv = new RendezVous($r['praticienid'],$r['patientid'],$r['specialite'],new \DateTimeImmutable($r['date']));
+                    $rdv->setId($r['id']);
+                    $retour[] = $rdv;
+                }
+                return $retour;
+
+
+            }else{
+                throw new RepositoryEntityNotFoundException("Patient $id not found");
+            }
+
+        }catch(\PDOException $e){
+            throw new RepositoryInternalException($e->getMessage());
+        }catch(\Exception $e){
+            throw new RepositoryInternalException($e->getMessage());
+        }
+    }
+
     public function cancelRdv(string $id ): void
     {
         try{
