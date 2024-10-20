@@ -31,9 +31,14 @@ Projet Développement Web Serveur avancé :
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 - [X] gérer le cycle de vie des rendez-vous (honoré, non honoré, payé),
 - [ ] afficher le planning d’un praticien sur une période donnée (date de début, date de fin) en
 précisant la spécialité concernée et le type de consultation (présentiel, téléconsultation),
+=======
+- [ ] gérer le cycle de vie des rendez-vous (honoré, non honoré, payé),
+- [ ] afficher le planning d’un praticien sur une période donnée (date de début, date de fin) en précisant la spécialité concernée et le type de consultation (présentiel, téléconsultation),
+>>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
 =======
 - [ ] gérer le cycle de vie des rendez-vous (honoré, non honoré, payé),
 - [ ] afficher le planning d’un praticien sur une période donnée (date de début, date de fin) en précisant la spécialité concernée et le type de consultation (présentiel, téléconsultation),

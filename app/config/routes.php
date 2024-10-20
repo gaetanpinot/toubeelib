@@ -33,8 +33,11 @@ return function (\Slim\App $app): \Slim\App {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     $app->get('/praticiens/{id}/planning[/]', \toubeelib\application\actions\GetPraticienPlanning::class)->setName('planningPraticien');
 
+=======
+>>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
 =======
 >>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
 =======
