@@ -43,9 +43,6 @@ class GetPraticienPlanning extends AbstractAction{
             }
             
             $dispos=$this->serviceRdv->getPlanningPraticien($args['id'], $jsonDates['start_date'], $jsonDates['end_date'],);
-            for($i=0; $i<count($dispos);$i++){
-                $dispos[$i]=$dispos[$i]->format($this->formatDate);
-            }
             return JsonRenderer::render($rs, 200, $dispos);
             
 

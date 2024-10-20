@@ -101,8 +101,6 @@ class ServiceRDV implements ServiceRDVInterface {
         return $results;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     public function getListeDisponibiliteDate(string $idPraticien, ?string $test_start_Date, ?string $test_end_Date): array
     {
         //echo "test for getListeDisponibiliteDate";
@@ -151,22 +149,17 @@ class ServiceRDV implements ServiceRDVInterface {
             : (new \DateTimeImmutable('now'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1])->add(new DateInterval('P31D'));
         
         $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
-        $results = array_map(function ($rdv) use ($startDate, $endDate) {
-            if ($rdv->status != RendezVous::ANNULE && $rdv->date->format('U') > $startDate && $rdv->date->format('U') < $endDate) {
-                return $rdv;
+        foreach($listeRDV as $rdv) {
+            if ($rdv->status != RendezVous::ANNULE && $rdv->dateHeure->format('U') > $startDate->format('U') && $rdv->dateHeure->format('U') < $endDate->format('U')) {
+                $results[] = $rdv->toDTO($this->servicePraticien->getPraticienById($idPraticien));
             }
-        }, $listeRDV);
-
+        }
+        
         return $results; 
     }
 
     public function getRDVbyPatient(string $id) : array {
-=======
-    public function getRdvByPatient(string $id) : array {
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
-    public function getRdvByPatient(string $id) : array {
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
+
         $listeRDV = $this->rdvRepository->getRdvByPatient($id);
         return array_map(function(RendezVous $rdv) {
                 return $rdv->toDTO($this->servicePraticien->getPraticienById($rdv->getPraticienId()));
@@ -224,10 +217,6 @@ class ServiceRDV implements ServiceRDVInterface {
             return $rdvOld->toDTO($praticien);
         }
         
-    }
-
-    public function getListeDisponibiliteDate(string $id, string $test_start_Date, string $test_end_Date): array
-    {
     }
 
 
