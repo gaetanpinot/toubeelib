@@ -51,4 +51,12 @@ class ServicePraticien implements ServicePraticienInterface
             throw new ServicePraticienInvalidDataException('invalid Specialite ID');
         }
     }
+
+    public function searchPraticien(PraticienDTO $p): array
+    {
+        $pratSearch= Praticien::fromDTO($p);
+        return array_map(function(Praticien $p){
+            return new PraticienDTO($p);
+        }, $this->praticienRepository->searchPraticiens($pratSearch));
+    }
 }

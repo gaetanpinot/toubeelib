@@ -31,5 +31,17 @@ class PraticienDTO extends DTO
         return $retour;
     }
 
+    public function __toString(): string
+    {
+        return "id : $this->id,
+                nom : $this->nom,
+        prenom : $this->prenom,
+        adresse : $this->adresse,
+        tel : $this->tel,
+        specialite : $this->specialiteLabel
+        ";
+    
+    }
+
 
 }

@@ -12,7 +12,7 @@ use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
 
-class getRdvByPatient extends AbstractAction
+class GetRdvByPatient extends AbstractAction
 {
         // todo : check status
 
@@ -29,7 +29,7 @@ class getRdvByPatient extends AbstractAction
         $status = 200;
         try {
             $rdvs = $this->serviceRdv->getRdvByPatient($args['id']);
-            $data = getRdvByPatient::ajouterLiensRdv($rdvs,$rq);
+            $data = GetRdvByPatient::ajouterLiensRdv($rdvs,$rq);
             $rs = JsonRenderer::render($rs, 200, $data);
             $this->loger->info('GetRdvPatient du patient: '.$args['id']);
 

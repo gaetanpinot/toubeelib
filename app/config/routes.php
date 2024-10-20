@@ -4,9 +4,10 @@ declare(strict_types=1);
 use Slim\Exception\HttpNotFoundException;
 
 
-use toubeelib\application\actions\GetDisposPraticien;
+
+use toubeelib\application\actions\GetRdvByPatient;
 use toubeelib\application\actions\PostSignIn;
-use \toubeelib\application\actions;
+use toubeelib\application\actions\SearchPraticien;
 
 return function (\Slim\App $app): \Slim\App {
 
@@ -21,29 +22,28 @@ return function (\Slim\App $app): \Slim\App {
     $app->get("/patients/{id}[/]", function () {
     })->setName('getPatient');
     // TODO get praticiens
-    $app->get("/praticiens/{id}[/]", function () {
-    })->setName('getPraticien');
+    // $app->get("/praticiens/{id}[/]", function () {
+    // })->setName('getPraticien');
     $app->patch('/rdvs/{id}[/]', \toubeelib\application\actions\PatchRdv::class)->setName('patchRdv');
 
-    // TODO get dispos 
     $app->get('/praticiens/{id}/dispos[/]', \toubeelib\application\actions\GetDisposPraticien::class)->setName('disposPraticien');
 
-    // TODO get dispos with date
     $app->get('/praticiens/{id}/dispos_date[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate');
 
     $app->get('/praticiens/{id}/planning[/]', \toubeelib\application\actions\GetPraticienPlanning::class)->setName('planningPraticien');
+    $app->get( '/praticiens/search[/]', SearchPraticien::class)->setName('searchPraticiens');
 
     //auth
     $app->post('/signin[/]', PostSignIn::class)->setName('signIn');
 
-    $app->get('/patients/{id}/rdvs[/]', actions\GetRdvByPatient::class)->setName('rdvPatient');
+    $app->get('/patients/{id}/rdvs[/]', GetRdvByPatient::class)->setName('rdvPatient');
 
-    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
-        throw new HttpNotFoundException($request);
-    });    
     $app->options('/{routes:.+}', function ($request, $response, $args) {
         return $response;
     });
+    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
+        throw new HttpNotFoundException($request);
+    });    
 
 
     return $app;

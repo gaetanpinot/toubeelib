@@ -5,6 +5,7 @@ use toubeelib\application\actions\GetRdvId;
 use toubeelib\application\actions\PatchRdv;
 use toubeelib\application\actions\PostCreateRdv;
 use toubeelib\application\actions\PostSignIn;
+use toubeelib\application\actions\SearchPraticien;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\application\actions\GetDisposPraticien;
 use toubeelib\application\actions\GetDisposPraticienDate;
@@ -21,6 +22,7 @@ return [
     GetDisposPraticienDate::class => DI\autowire(),
     GetDisposPraticien::class => DI\autowire(),
     PostSignIn::class => DI\autowire(),
+    SearchPraticien::class => DI\autowire(),
     // GetDisposPraticien::class=>DI\create(GetDisposPraticien::class)->constructor(DI\Container::class),
 
 

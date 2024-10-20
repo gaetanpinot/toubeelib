@@ -208,6 +208,7 @@ class PgRdvRepository implements  RdvRepositoryInterface{
             $this->pdo->prepare($query)->execute($val);
 
         }catch(\PDOException $e){
+            $this->loger->error($e->getMessage());
             throw new RepositoryInternalException($e->getMessage());
         }
     }

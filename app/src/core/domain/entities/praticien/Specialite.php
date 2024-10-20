@@ -11,7 +11,7 @@ class Specialite extends Entity
     protected string $label;
     protected string $description;
 
-    public function __construct(string $ID, string $label, string $description)
+    public function __construct(string $ID, string $label, string $description = "")
     {
         $this->id = $ID;
         $this->label = $label;

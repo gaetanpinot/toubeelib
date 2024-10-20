@@ -1,0 +1,21 @@
+meta {
+  name: search prat
+  type: http
+  seq: 13
+}
+
+get {
+  url: http://localhost:6080/praticiens/search
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "prenom": "",
+    "nom": "",
+    "specialite" : "",
+    "adresse":"",
+    "tel":""
+  }
+}
