@@ -101,11 +101,6 @@ class ServiceRDV implements ServiceRDVInterface {
         return $results;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     public function getListeDisponibiliteDate(string $idPraticien, ?string $test_start_Date, ?string $test_end_Date): array
     {
         //echo "test for getListeDisponibiliteDate";
@@ -223,9 +218,6 @@ class ServiceRDV implements ServiceRDVInterface {
         
     }
 
-    public function getListeDisponibiliteDate(string $id, string $test_start_Date, string $test_end_Date): array
-    {
-    }
 
 
 }
