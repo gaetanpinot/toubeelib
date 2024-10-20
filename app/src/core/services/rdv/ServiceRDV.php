@@ -163,23 +163,7 @@ class ServiceRDV implements ServiceRDVInterface {
         return $results; 
     }
 
-    public function getRDVbyPatient(string $id) : array {
-
-=======
     public function getRdvByPatient(string $id) : array {
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
-    public function getRdvByPatient(string $id) : array {
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
-    public function getRdvByPatient(string $id) : array {
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
-    public function getRdvByPatient(string $id) : array {
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
-    public function getRdvByPatient(string $id) : array {
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
         $listeRDV = $this->rdvRepository->getRdvByPatient($id);
         return array_map(function(RendezVous $rdv) {
                 return $rdv->toDTO($this->servicePraticien->getPraticienById($rdv->getPraticienId()));
@@ -239,36 +223,9 @@ class ServiceRDV implements ServiceRDVInterface {
         
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
     public function getListeDisponibiliteDate(string $id, string $test_start_Date, string $test_end_Date): array
     {
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
-=======
->>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
 
 }
