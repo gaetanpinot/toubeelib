@@ -30,8 +30,11 @@ return function (\Slim\App $app): \Slim\App {
 
     $app->get('/praticiens/{id}/dispos_date[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate');
 
+<<<<<<< HEAD
     $app->get('/praticiens/{id}/planning[/]', \toubeelib\application\actions\GetPraticienPlanning::class)->setName('planningPraticien');
 
+=======
+>>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
     $app->get( '/praticiens/search[/]', SearchPraticien::class)->setName('searchPraticiens');
 
     //auth

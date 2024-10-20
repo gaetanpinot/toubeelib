@@ -101,6 +101,7 @@ class ServiceRDV implements ServiceRDVInterface {
         return $results;
     }
 
+<<<<<<< HEAD
     public function getListeDisponibiliteDate(string $idPraticien, ?string $test_start_Date, ?string $test_end_Date): array
     {
         //echo "test for getListeDisponibiliteDate";
@@ -160,6 +161,9 @@ class ServiceRDV implements ServiceRDVInterface {
 
     public function getRDVbyPatient(string $id) : array {
 
+=======
+    public function getRdvByPatient(string $id) : array {
+>>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
         $listeRDV = $this->rdvRepository->getRdvByPatient($id);
         return array_map(function(RendezVous $rdv) {
                 return $rdv->toDTO($this->servicePraticien->getPraticienById($rdv->getPraticienId()));
@@ -219,5 +223,12 @@ class ServiceRDV implements ServiceRDVInterface {
         
     }
 
+<<<<<<< HEAD
+=======
+    public function getListeDisponibiliteDate(string $id, string $test_start_Date, string $test_end_Date): array
+    {
+    }
+
+>>>>>>> 97bc7b966805fe9c16f222e9588a1fdcf7fcfdb8
 
 }
