@@ -26,3 +26,5 @@
 [2024-10-19 12:03] Toubeelib_logger.ERROR: GetRdvPatient : 013be5b0-8d00-3b8f-b848-d7d1f89a56bb : SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "rdv" does not exist LINE 9:                 rdv,                         ^ []
 [2024-10-19 12:52] Toubeelib_logger.ERROR: GetRdvPatient : 013be5b0-8d00-3b8f-b848-d7d1f89a56bb : Praticien 013be5b0-8d00-3b8f-b848-d7d1f89a56bb not found []
 [2024-10-19 13:25] Toubeelib_logger.INFO: GetRdvPatient du patient: f1e743b8-65af-3fb8-a5e0-86ff65c00573 []
+[2024-10-20 16:19] Toubeelib_logger.ERROR: PgAuthRep SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "users" does not exist LINE 1: select * from users where users.id=$1;                       ^ []
+[2024-10-20 16:58] Toubeelib_logger.ERROR: PgAuthRep SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "users" does not exist LINE 1: select * from users where users.id=$1;                       ^ []

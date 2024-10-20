@@ -31,6 +31,7 @@ return function (\Slim\App $app): \Slim\App {
     // TODO get dispos with date
     $app->get('/praticiens/{id}/dispos_date[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate');
 
+    $app->get('/praticiens/{id}/planning[/]', \toubeelib\application\actions\GetPraticienPlanning::class)->setName('planningPraticien');
 
     //auth
     $app->post('/signin[/]', PostSignIn::class)->setName('signIn');

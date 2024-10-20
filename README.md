@@ -35,7 +35,7 @@ ce qui s’y rattache, et pour l’authentification. Ces bases de données pourr
 - [x] lister les disponibilités d’un praticien sur une période donnée (date de début, date de fin),
 - [x] réserver un rendez-vous pour un praticien à une date/heure donnée,
 - [x] annuler un rendez-vous, à la demande d’un patient ou d’un praticien,
-- [ ] gérer le cycle de vie des rendez-vous (honoré, non honoré, payé),
+- [X] gérer le cycle de vie des rendez-vous (honoré, non honoré, payé),
 - [ ] afficher le planning d’un praticien sur une période donnée (date de début, date de fin) en
 précisant la spécialité concernée et le type de consultation (présentiel, téléconsultation),
 - [x] afficher les rendez-vous d’un patient,

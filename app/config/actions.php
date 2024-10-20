@@ -19,6 +19,7 @@ return [
     PostCreateRdv::class => DI\autowire(),
     DeleteRdvId::class => DI\autowire(),
     GetDisposPraticienDate::class => DI\autowire(),
+    GetDisposPraticien::class => DI\autowire(),
     PostSignIn::class => DI\autowire(),
     // GetDisposPraticien::class=>DI\create(GetDisposPraticien::class)->constructor(DI\Container::class),
 

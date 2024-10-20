@@ -18,8 +18,7 @@ use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
-class ServiceRDV implements ServiceRDVInterface
-{
+class ServiceRDV implements ServiceRDVInterface {
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
     private string $dateFormat;
@@ -100,6 +99,63 @@ class ServiceRDV implements ServiceRDVInterface
         }
 
         return $results;
+    }
+
+    public function getListeDisponibiliteDate(string $idPraticien, ?string $test_start_Date, ?string $test_end_Date): array
+    {
+        //echo "test for getListeDisponibiliteDate";
+
+        $results = [];
+        $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
+        $listeRDVHorraires = array_map(function ($rdv) {
+            if ($rdv->status != RendezVous::ANNULE) {
+                $rr= $rdv->dateHeure->format($this->dateFormat);
+                return $rr;
+            }
+        }, $listeRDV);
+
+        // ! return vide si start date est vide uniquement 
+        $startDate = $test_start_Date != null 
+            ? (new \DateTimeImmutable($test_start_Date))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]) 
+            : (new \DateTimeImmutable('now'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
+
+        $endDate = $test_end_Date != null && $test_end_Date != $test_start_Date
+            ? (new \DateTimeImmutable($test_end_Date))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]) 
+            : (new \DateTimeImmutable('now'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1])->add(new DateInterval('P31D'));
+
+        while ($startDate->diff($endDate)->format('%d') > 0) {
+            while ($startDate->format('U') % 86400 <= ServiceRDV::HFIN[0] * 3600 + ServiceRDV::HFIN[1] * 60) {
+
+                if (!in_array($startDate->format($this->dateFormat), $listeRDVHorraires)) {
+
+                    $results[] = $startDate;
+                }
+                $startDate = $startDate->add(new DateInterval("PT30M"));
+            }
+            $startDate = $startDate->add(new DateInterval('P1D'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
+        }
+
+        return $results /*!= null ? $results : "Pas de disponibilité pour ce praticien"*/; 
+    }
+
+    public function getPlanningPraticien(string $idPraticien, ?string $test_start_Date, ?string $test_end_Date): array
+    {
+        $startDate = $test_start_Date != null 
+            ? (new \DateTimeImmutable($test_start_Date))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]) 
+            : (new \DateTimeImmutable('now'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
+
+        $endDate = $test_end_Date != null && $test_end_Date != $test_start_Date
+            ? (new \DateTimeImmutable($test_end_Date))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]) 
+            : (new \DateTimeImmutable('now'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1])->add(new DateInterval('P31D'));
+        
+        $listeRDV = $this->rdvRepository->getRdvByPraticien($idPraticien);
+        $results = array_map(function ($rdv) use ($startDate, $endDate) {
+            if ($rdv->status != RendezVous::ANNULE && $rdv->date->format('U') > $startDate && $rdv->date->format('U') < $endDate) {
+                return $rdv;
+            }
+        }, $listeRDV);
+
+        return $results; 
     }
 
     public function getRDVbyPatient(string $id) : array {
