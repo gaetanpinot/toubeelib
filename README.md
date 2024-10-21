@@ -18,7 +18,7 @@ utiliser `make genereDb` pour generer la base de donnée
 - [x] API respectant les principes RESTful : désigation des ressources (URIs), opérations et méthodes HTTP adéquates, status de retours corrects, données échangées au format JSON, incluant des liens HATEOAS, Gaëtan
 - [x] architecture basée sur les principes d’architecture Hexagonale et d’inversion de dépendances, en particulier pour les bases de données, Gaëtan
 - [x] utilisation d’un conteneur d’injection de dépendances, Gaëtan
-- [x] traitement des erreurs et exceptions,
+- [x] traitement des erreurs et exceptions, Liam (en partie)
 - [x] traitement des headers CORS,
 - [x] authentification à l’aide de tokens JWT, Gaëtan
 - [x] utilisation adéquate des mécanismes du framework Slim, notamment les middlewares,Gaëtan
@@ -27,11 +27,11 @@ utiliser `make genereDb` pour generer la base de donnée
 ## Les fonctionnalités minimales attendues (notées sur 6 points) :
 - [x] lister/rechercher des praticiens, Gaëtan
 - [x] lister les disponibilités d’un praticien sur une période donnée (date de début, date de fin), Sasha
-- [x] réserver un rendez-vous pour un praticien à une date/heure donnée, 
+- [x] réserver un rendez-vous pour un praticien à une date/heure donnée, Liam
 - [x] annuler un rendez-vous, à la demande d’un patient ou d’un praticien, Gaëtan
 - [x] gérer le cycle de vie des rendez-vous (honoré, non honoré, payé),
-- [x] afficher le planning d’un praticien sur une période donnée (date de début, date de fin) en précisant la spécialité concernée et le type de consultation (présentiel, téléconsultation),
-- [x] afficher les rendez-vous d’un patient,
+- [x] afficher le planning d’un praticien sur une période donnée (date de début, date de fin) en précisant la spécialité concernée et le type de consultation (présentiel, téléconsultation), Liam
+- [x] afficher les rendez-vous d’un patient, Liam
 - [ ] s’authentifier en tant que patient ou praticien.
 ## Les fonctionnalités additionnelles attendues (notées sur 4 points) :
 - [ ] créer un praticien,
