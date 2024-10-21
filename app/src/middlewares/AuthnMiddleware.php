@@ -2,14 +2,12 @@
 namespace toubeelib\middlewares;
 
 use DI\Container;
-use FTP\UnexpectedValueException;
 use Monolog\Logger;
 use PHPUnit\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpUnauthorizedException;
 use toubeelib\providers\auth\AuthInvalidException;
 use toubeelib\providers\auth\AuthnProviderInterface;
@@ -58,6 +56,12 @@ class AuthnMiddleware implements MiddlewareInterface{
 
 
 		// avant requête
+		//authz middleware
+		// $authz = new AuthzMiddleware($user->role);	
+		// $rs = $authz->process($rq, $next);
+
+
+
 		$rs = $next->handle($rq);
 		//après requete
 		return $rs;

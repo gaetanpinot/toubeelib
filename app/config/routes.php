@@ -22,8 +22,8 @@ return function (\Slim\App $app): \Slim\App {
     $app->get("/patients/{id}[/]", function () {
     })->setName('getPatient');
     // TODO get praticiens
-    // $app->get("/praticiens/{id}[/]", function () {
-    // })->setName('getPraticien');
+    $app->get("/praticiens/{id:[0-9]+}[/]", function () {
+    })->setName('getPraticien');
     $app->patch('/rdvs/{id}[/]', \toubeelib\application\actions\PatchRdv::class)->setName('patchRdv');
 
     $app->get('/praticiens/{id}/dispos[/]', \toubeelib\application\actions\GetDisposPraticien::class)->setName('disposPraticien');
