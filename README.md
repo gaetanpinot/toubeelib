@@ -29,7 +29,7 @@ utiliser `make genereDb` pour generer la base de donnée
 - [x] lister les disponibilités d’un praticien sur une période donnée (date de début, date de fin), Sasha
 - [x] réserver un rendez-vous pour un praticien à une date/heure donnée, Liam
 - [x] annuler un rendez-vous, à la demande d’un patient ou d’un praticien, Gaëtan
-- [x] gérer le cycle de vie des rendez-vous (honoré, non honoré, payé),
+- [x] gérer le cycle de vie des rendez-vous (honoré, non honoré, payé), Sasha (en partie),
 - [x] afficher le planning d’un praticien sur une période donnée (date de début, date de fin) en précisant la spécialité concernée et le type de consultation (présentiel, téléconsultation), Liam
 - [x] afficher les rendez-vous d’un patient, Liam
 - [ ] s’authentifier en tant que patient ou praticien.
