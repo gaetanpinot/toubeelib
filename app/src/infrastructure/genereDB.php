@@ -71,6 +71,30 @@ foreign key(status) references status(id)
 
 $config= parse_ini_file(__DIR__.'/../../config/pdoConfig.ini');
 $co = new PDO($config['driver'].':host='.$config['host'].';port='.$config['port'].';dbname='.$config['dbname'].';user='.$config['user'].';password='.$config['password']);
+try{
+	$config = parse_ini_file(__DIR__.'/../../config/pdoConfigAuth.ini');
+	$coAuth = new PDO($config['driver'].':host='.$config['host'].';port='.$config['port'].';dbname='.$config['dbname'].';user='.$config['user'].';password='.$config['password']);
+}catch(Exception $e){
+	echo("Connexion à la base auth impossible, veuillez verifier si elle existe bien\n");
+	throw $e;
+}
+
+//on recupère les ids des patients
+$query = "select id,email from users where role = 0;";
+$patientsIds= $coAuth->prepare($query);
+$patientsIds->execute();
+$patientsIds = $patientsIds->fetchAll(PDO::FETCH_ASSOC);
+
+//on recupère les praticiens
+$query = "select id,email from users where role = 10";
+$praticiensIds= $coAuth->prepare($query);
+$praticiensIds->execute();
+$praticiensIds = $praticiensIds->fetchAll(PDO::FETCH_ASSOC);
+
+foreach($patientsIds as $pa){
+// var_dump($pa['id']);
+	// echo $pa['id'] . ", " . $pa['email'] ."\n";
+}
 
 $res=$co->exec($drop);
 $res=$co->exec($cspecialite);
@@ -164,13 +188,13 @@ foreach($status as $s){
 // adresse varchar(100) not null,
 // tel varchar(15) not null,
 // specialite varchar(5) not null,
-$praticienIds=[];
+// $praticienIds=[];
 $query='insert into praticien (id, rpps, nom, prenom, adresse, tel, specialite) 
 values(:id, :rrps, :nom, :prenom, :adresse, :tel, :specialite);';
 $insert = $co->prepare($query);
-for($i = 0;$i<$nbPraticien;$i++){
+foreach($praticiensIds as $pra){
 	$val=[
-		'id'=> $faker->uuid(),
+		'id'=> $pra['id'],
 		'rrps'=> $faker->numberBetween(100000,999999),
 		'prenom'=> $faker->firstName(),
 		'nom'=>$faker->lastName(),
@@ -179,7 +203,6 @@ for($i = 0;$i<$nbPraticien;$i++){
 		'specialite'=>$speIds[$faker->numberBetween(0,count($speIds)-1)]
 	];
 	$insert->execute($val);
-	$praticienIds[]=$val['id'];
 
 }
 
@@ -195,24 +218,22 @@ for($i = 0;$i<$nbPraticien;$i++){
 // mail varchar(100),
 // idMedcinTraitant UUID,
 // numSecuSociale varchar(50),
-$patientIds=[];
 $query="insert into patient (id, nom, prenom, dateNaissance, adresse, tel, mail, idMedcinTraitant, numSecuSociale) 
 values (:id,:nom,:prenom,:date,:adresse,:tel, :mail, :idMedcinTraitant, :numSecuSociale);";
 $insert = $co->prepare($query);
-for($i=0;$i<$nbPatient;$i++){
-	$val=['id'=>$faker->uuid(),
+foreach($patientsIds as $pa){
+	$val=['id'=> $pa['id'],
 		'nom'=>$faker->lastName(),
 		'prenom'=>$faker->firstName(),
 		'date'=>$faker->date(),
 		'adresse'=>$faker->address(),
 		'tel'=>$faker->phoneNumber(),
-		'mail'=>$faker->email(),
-		'idMedcinTraitant'=>$praticienIds[$faker->numberBetween(0,count($praticienIds)-1)],
+		'mail'=>$pa['email'],
+		'idMedcinTraitant'=>$praticiensIds[$faker->numberBetween(0,count($praticiensIds)-1)]['id'],
 		'numSecuSociale'=> $faker->nir() //erreur nir pas trouvé mais fonctionne si localite du faker à fr_FR
 
 	];
 	$insert->execute($val);
-	$patientIds[]=$val['id'];
 }
 
 // id UUID,
@@ -233,8 +254,8 @@ for($i=0;$i<$nbRdv;$i){
 		'date' => $faker->dateTimeBetween('-1 days','+10 weeks')
 			->setTime($faker->numberBetween(ServiceRDV::HDEBUT[0],ServiceRDV::HFIN[0]),
 				$faker->numberBetween(0,(60%ServiceRDV::INTERVAL)-1)*ServiceRDV::INTERVAL, 0)->format('Y-m-d H:i'),
-		'patientId' => $patientIds[$faker->numberBetween(0,count($patientIds)-1)],
-		'praticienId' => $praticienIds[$faker->numberBetween(0,count($praticienIds)-1)],
+		'patientId' => $patientsIds[$faker->numberBetween(0,count($patientsIds)-1)]['id'],
+		'praticienId' => $praticiensIds[$faker->numberBetween(0,count($praticiensIds)-1)]['id'],
 		'status' => $statusIds[$faker->numberBetween(0,count($statusIds)-1)]
 	];
 	$resultVerif=1;

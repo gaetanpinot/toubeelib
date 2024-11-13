@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Exception\HttpUnauthorizedException;
+use Slim\Routing\RouteContext;
 use toubeelib\providers\auth\AuthInvalidException;
 use toubeelib\providers\auth\AuthnProviderInterface;
 
@@ -25,17 +26,17 @@ class AuthnMiddleware implements MiddlewareInterface{
 
 	public function process(ServerRequestInterface $rq, RequestHandlerInterface $next): ResponseInterface
 	{
-		$path = $rq->getUri()->getPath();
-		if($path=="/signin"){
-			$rs = $next->handle($rq);
-			return $rs;
-		}
+		// $path = RouteContext::fromRequest($rq)->getRoute()->getName();
+		// if($path=="signIn"){
+		// 	$rs = $next->handle($rq);
+		// 	return $rs;
+		// }
 		if(!$rq->hasHeader("Authorization")){
 		foreach($rq->getHeaders() as $s){
 			$this->loger->error($s[0]);
 			}
 
-			throw new HttpUnauthorizedException($rq, "Authorization manquante, veuillez vous enregistrer");
+			throw new HttpUnauthorizedException($rq, "Header Authorization manquante, veuillez vous enregistrer");
 		}
 		try{
 			$token = $rq->getHeader("Authorization")[0];
@@ -45,6 +46,7 @@ class AuthnMiddleware implements MiddlewareInterface{
 			}
 			$token = $token[0];
 			$user = $this->authProvider->getSignedInUser($token);
+			$rq = $rq->withAttribute('user', $user);
 		}catch (AuthInvalidException $e){
 			$this->loger->error($e->getMessage());
 			throw new HttpUnauthorizedException($rq, $e->getMessage());

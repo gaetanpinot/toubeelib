@@ -3,6 +3,7 @@
 use DI\ContainerBuilder;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Factory\AppFactory;
+use Slim\Middleware\ErrorMiddleware;
 use toubeelib\middlewares\AuthnMiddleware;
 use toubeelib\middlewares\CorsMiddleware;
 
@@ -19,8 +20,8 @@ $app = AppFactory::createFromContainer($c);
 
 
 $app->addBodyParsingMiddleware();
+// $app->addMiddleware($c->get(AuthnMiddleware::class));
 $app->addRoutingMiddleware();
-$app->addMiddleware($c->get(AuthnMiddleware::class));
 $app->addErrorMiddleware($c->get('displayErrorDetails'), false, false);
 $app->addMiddleware($c->get(CorsMiddleware::class));
 
