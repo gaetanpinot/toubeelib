@@ -60,11 +60,8 @@ return function (\Slim\App $app): \Slim\App {
     $app->get("/praticiens/{id:[0-9]+}[/]", function () {
     })->setName('getPraticien');
 
-    $app->get('/praticiens/{id}/dispos[/]', \toubeelib\application\actions\GetDisposPraticien::class)
-        ->setName('disposPraticien')
-        ->add(AuthnMiddleware::class);
 
-    $app->get('/praticiens/{id}/dispos_date[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate')
+    $app->get('/praticiens/{id}/dispos[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate')
         ->add(AuthnMiddleware::class);
 
     $app->get('/praticiens/{id}/rdvs[/]', \toubeelib\application\actions\GetPraticienPlanning::class)

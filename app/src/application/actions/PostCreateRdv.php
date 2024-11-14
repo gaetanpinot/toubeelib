@@ -48,7 +48,7 @@ class PostCreateRdv extends AbstractAction
             $rs = JsonRenderer::render($rs, 201, GetRdvId::ajouterLiensRdv($dtoRendezVousCree,$rq));
             // entrée dans le header avec le nom Location et pour valeur la route vers le rdv crée
             $rs = $rs->withAddedHeader("Location", $routeParser->urlFor("getRdv", ["id" => $dtoRendezVousCree->id]));
-            $this->loger->info('CreateRdv : '.$args['id']);
+            $this->loger->info('CreateRdv : '.$dtoRendezVousCree->id);
 
             return $rs;
         } catch (NestedValidationException $e) {

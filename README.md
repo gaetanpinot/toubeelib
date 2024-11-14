@@ -13,7 +13,14 @@ Fichier de config à créer (copier le fichier .dist existant en enlevant .dist)
 Les mots de passes doivent être consistant dans la db
 utiliser `make install` pour installer le projet avec composer dans le docker
 utiliser `make genereDb` pour generer la base de donnée
-## Todolist:
+## Tests
+
+Le dossier `./testsApi/`, à ouvrir avec [Bruno](https://www.usebruno.com), contient une collection de requete.  
+Elle permette de tester l'api, elle contienne les données nécéssaires pour tester l'api.  
+Il faut commencer par executer une requête de connexion, en tant que praticien ou patient selon ce que l'on veut tester.  
+Il faut ajuster les requettes avecs des ids de rendez vous car ils sont regénéré aléatoirement a chaque foit qu'on regénère la base de donnée.  
+Il faut aussi ajuster les heures de creation du rdv en fonction des disponibilité du praticien.  
+
 ## Toubeelib, architecture générale (noté sur 10 points) :
 - [x] API respectant les principes RESTful : désigation des ressources (URIs), opérations et méthodes HTTP adéquates, status de retours corrects, données échangées au format JSON, incluant des liens HATEOAS, Gaëtan
 - [x] architecture basée sur les principes d’architecture Hexagonale et d’inversion de dépendances, en particulier pour les bases de données, Gaëtan

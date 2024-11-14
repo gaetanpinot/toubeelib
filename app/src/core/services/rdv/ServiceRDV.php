@@ -132,7 +132,7 @@ class ServiceRDV implements ServiceRDVInterface {
                 }
                 $startDate = $startDate->add(new DateInterval("PT30M"));
             }
-            $startDate = $startDate->add(new DateInterval('P1D'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
+            $startDate = $startDate->add(new DateInterval('P1D')) ->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);
         }
 
         return $results /*!= null ? $results : "Pas de disponibilité pour ce praticien"*/; 
