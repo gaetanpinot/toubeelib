@@ -140,6 +140,7 @@ class ServiceRDV implements ServiceRDVInterface {
 
     public function getPlanningPraticien(string $idPraticien, ?string $test_start_Date, ?string $test_end_Date): array
     {
+        $results = [];
         $startDate = $test_start_Date != null 
             ? (new \DateTimeImmutable($test_start_Date))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]) 
             : (new \DateTimeImmutable('now'))->setTime(ServiceRDV::HDEBUT[0], ServiceRDV::HDEBUT[1]);

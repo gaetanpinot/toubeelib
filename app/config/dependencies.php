@@ -4,8 +4,12 @@ use Psr\Container\ContainerInterface;
 use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib\core\services\AuthorizationPatientService;
+use toubeelib\core\services\AuthorizationPatientServiceInterface;
 use toubeelib\core\services\ServiceAuth;
 use toubeelib\core\services\ServiceAuthInterface;
+use toubeelib\core\services\praticien\AuthorizationPraticienService;
+use toubeelib\core\services\praticien\AuthorizationPraticienServiceInterface;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\services\rdv\AuthorizationRendezVousService;
@@ -16,6 +20,8 @@ use toubeelib\infrastructure\repositories\PgAuthRepository;
 use toubeelib\infrastructure\repositories\PgPraticienRepository;
 use toubeelib\infrastructure\repositories\PgRdvRepository;
 use toubeelib\middlewares\AuthnMiddleware;
+use toubeelib\middlewares\AuthzPatient;
+use toubeelib\middlewares\AuthzPraticiens;
 use toubeelib\middlewares\AuthzRDV;
 use toubeelib\middlewares\CorsMiddleware;
 use toubeelib\providers\auth\AuthnProviderInterface;
@@ -38,8 +44,12 @@ return [
     ServiceRDVInterface::class => DI\autowire(ServiceRDV::class),
     ServiceAuthInterface::class => DI\autowire(ServiceAuth::class),
     AuthorizationRendezVousServiceInterface::class => DI\autowire(AuthorizationRendezVousService::class),
+    AuthorizationPatientServiceInterface::class => DI\autowire(AuthorizationPatientService::class),
+    AuthorizationPraticienServiceInterface::class => DI\autowire(AuthorizationPraticienService::class),
 
     AuthzRDV::class => DI\autowire(),
+    AuthzPatient::class =>DI\autowire(),
+    AuthzPraticiens::class => DI\autowire(),
 
     //PDO
     'pdo.commun' => function(ContainerInterface $c){

@@ -49,7 +49,7 @@ class AuthnMiddleware implements MiddlewareInterface{
 			$rq = $rq->withAttribute('user', $user);
 		}catch (AuthInvalidException $e){
 			$this->loger->error($e->getMessage());
-			throw new HttpUnauthorizedException($rq, $e->getMessage());
+			throw new HttpUnauthorizedException($rq, "Votre authentification n'est pas valide, veuillez vous reconnecter");
 		}
 		catch(\Error $e){
 			$this->loger->error($e->getMessage());

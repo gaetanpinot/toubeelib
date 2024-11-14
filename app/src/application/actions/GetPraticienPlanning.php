@@ -28,7 +28,7 @@ class GetPraticienPlanning extends AbstractAction{
 
         $praticienIdValidator = Validator::key('id',Validator::Uuid()->notEmpty());
         $praticienValidator = Validator::key('start_date', Validator::dateTime($this->formatDate)->notEmpty())
-        ->key('end_date', Validator::dateTime($this->formatDate)->notEmpty());
+        ->key('end_date', Validator::dateTime($this->formatDate));
 
 
         
