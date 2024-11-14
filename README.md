@@ -32,7 +32,7 @@ utiliser `make genereDb` pour generer la base de donnée
 - [x] gérer le cycle de vie des rendez-vous (honoré, non honoré, payé), Sasha (en partie),
 - [x] afficher le planning d’un praticien sur une période donnée (date de début, date de fin) en précisant la spécialité concernée et le type de consultation (présentiel, téléconsultation), Liam
 - [x] afficher les rendez-vous d’un patient, Liam
-- [ ] s’authentifier en tant que patient ou praticien.
+- [x] s’authentifier en tant que patient ou praticien. Gaëtan
 ## Les fonctionnalités additionnelles attendues (notées sur 4 points) :
 - [ ] créer un praticien,
 - [ ] s’inscrire en tant que patient

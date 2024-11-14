@@ -23,7 +23,7 @@ class ServiceAuth implements ServiceAuthInterface{
 	public function byCredentials(CredentialsDTO $credentials): AuthDTO
 	{
 		try{
-			$user = $this->repositoryAuth->getUser($credentials->id);
+			$user = $this->repositoryAuth->getUserByMail($credentials->email);
 			if(!password_verify($credentials->password,$user->password)){
 
 				throw new ServiceAuthBadPasswordException("Mauvais mot de passe");

@@ -30,7 +30,7 @@ class PostSignIn extends AbstractAction
         $jsonSignIn = $rq->getParsedBody();
 
 
-        $rdvInputValidator = Validator::key('id', Validator::uuid()->notEmpty())
+        $rdvInputValidator = Validator::key('email', Validator::email()->notEmpty())
             ->key('password', Validator::stringType()->notEmpty());
 
         try {
@@ -38,9 +38,9 @@ class PostSignIn extends AbstractAction
             $rdvInputValidator->assert($jsonSignIn);
             //formatage
 
-            $authDto = $this->authProvider->signin(new CredentialsDTO( $jsonSignIn['id'], $jsonSignIn['password'] ) );
+            $authDto = $this->authProvider->signin(new CredentialsDTO('', $jsonSignIn['password'] , $jsonSignIn['email']) );
             $rs = $rs->withHeader('access_token', $authDto->atoken);
-            $this->loger->info("Sign in de l'utilisateur " .$jsonSignIn['id']);
+            $this->loger->info("Sign in de l'utilisateur " .$jsonSignIn['email']);
             return JsonRenderer::render($rs,201,[]);
 
             return $rs;

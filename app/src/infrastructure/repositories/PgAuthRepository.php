@@ -15,7 +15,7 @@ class PgAuthRepository implements AuthRepositoryInterface{
     public function __construct(Container $co)
     {
         $this->pdo=$co->get('pdo.auth');
-        $this->loger = $co->get(Logger::class);
+        $this->loger = $co->get(Logger::class)->withName("PgAuth");
         
     }
     public function getUser(string $id): User
@@ -40,5 +40,18 @@ class PgAuthRepository implements AuthRepositoryInterface{
     public function deletUser(string $id): void
     {
     }
+
+    public function getUserByMail(string $email): User
+    {
+    try{
+        $query='select * from users where users.email=:email;';
+        $rq=$this->pdo->prepare($query);
+        $rq->execute(['email'=>$email]);
+        $user = $rq->fetch();
+            return new User($user['id'],$user['email'], $user['password'], $user['role']);
+        }catch(\PDOException $e){
+            $this->loger->error($e->getMessage());
+            throw new RepositoryEntityNotFoundException($e->getMessage());
+        }}
 
 }

@@ -26,11 +26,6 @@ class AuthnMiddleware implements MiddlewareInterface{
 
 	public function process(ServerRequestInterface $rq, RequestHandlerInterface $next): ResponseInterface
 	{
-		// $path = RouteContext::fromRequest($rq)->getRoute()->getName();
-		// if($path=="signIn"){
-		// 	$rs = $next->handle($rq);
-		// 	return $rs;
-		// }
 		if(!$rq->hasHeader("Authorization")){
 		foreach($rq->getHeaders() as $s){
 			$this->loger->error($s[0]);
