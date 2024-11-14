@@ -1,6 +1,7 @@
 <?php
 
 use toubeelib\application\actions\DeleteRdvId;
+use toubeelib\application\actions\GetPatient;
 use toubeelib\application\actions\GetRdvId;
 use toubeelib\application\actions\PatchRdv;
 use toubeelib\application\actions\PostCreateRdv;
@@ -23,15 +24,9 @@ return [
     GetDisposPraticien::class => DI\autowire(),
     PostSignIn::class => DI\autowire(),
     SearchPraticien::class => DI\autowire(),
-    // GetDisposPraticien::class=>DI\create(GetDisposPraticien::class)->constructor(DI\Container::class),
+    GetPatient::class => DI\autowire(),
 
-
-    // GetDisposPraticienDate::class=>DI\create(GetDisposPraticienDate::class)->constructor(DI\Container::class),
-
-    // GetRdvId::class => DI\create(GetRdvId::class)->constructor(DI\Container::class),
-    // PatchRdv::class => DI\create(PatchRdv::class)->constructor(DI\Container::class),
-    // PostCreateRdv::class => DI\create(PostCreateRdv::class)->constructor(DI\Container::class),
-    // DeleteRdvId::class => DI\create(DeleteRdvId::class)->constructor(DI\Container::class),
+    
     
 
 ];

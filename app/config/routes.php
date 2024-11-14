@@ -5,6 +5,7 @@ use Slim\Exception\HttpNotFoundException;
 
 
 
+use toubeelib\application\actions\GetPatient;
 use toubeelib\application\actions\GetRdvByPatient;
 
 use toubeelib\application\actions\PostSignIn;
@@ -49,7 +50,7 @@ return function (\Slim\App $app): \Slim\App {
         ->add(AuthnMiddleware::class);
 
     // TODO get patients
-    $app->get("/patients/{id}[/]", function () {})
+    $app->get("/patients/{id}[/]", GetPatient::class)
         ->setName('getPatient')
         ->add(AuthzPatient::class)
         ->add(AuthnMiddleware::class);

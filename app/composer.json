@@ -4,6 +4,7 @@
     "php": ">=8.2",
     "slim/slim": "^4.14",
     "slim/psr7": "^1.7",
+    "psr/container": "*",
     "ramsey/uuid": "^4.7",
     "firebase/php-jwt": "^6.10",
     "monolog/monolog": "^3.7",
