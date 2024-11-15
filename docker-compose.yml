@@ -10,6 +10,8 @@ services:
       context: build
       dockerfile: 8.3-cli.Dockerfile
     env_file: ./toubeelib.env
+    container_name: api_toubeelib
+
     ports:
       - '6080:80'
     volumes:
