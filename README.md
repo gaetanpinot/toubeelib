@@ -9,10 +9,10 @@ Fichier de config à créer (copier le fichier .dist existant en enlevant .dist)
 - `./toubeelibdb.env`
 - `./toubeelibauthdb.env`
 - `./app/config/pdoConfig.ini`
-- `./app/config/pdoConfigAuth.ini`
-Les mots de passes doivent être consistant dans la db
-utiliser `make install` pour installer le projet avec composer dans le docker
-utiliser `make genereDb` pour generer la base de donnée
+- `./app/config/pdoConfigAuth.ini`  
+Ils peuvent aussi êtres copié diréctement avec `make confFiles`  
+Les mots de passes doivent être consistant dans la db  
+Utiliser `make install` pour installer le projet de zero avec composer dans le docker, les autres commandes makes peuvent être utilisés individuellement
 ## Tests
 
 Le dossier `./testsApi/`, à ouvrir avec [Bruno](https://www.usebruno.com), contient une collection de requete.  
