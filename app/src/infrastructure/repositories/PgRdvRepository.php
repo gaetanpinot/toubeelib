@@ -134,6 +134,7 @@ class PgRdvRepository implements  RdvRepositoryInterface{
                 rdv.patientid as patientid,
                 rdv.praticienid as praticienid,
                 rdv.date as date, 
+                rdv.status as status,
                 praticien.specialite as specialite 
             from 
                 rdv,
@@ -150,7 +151,7 @@ class PgRdvRepository implements  RdvRepositoryInterface{
             if($result){
                 $retour = [];
                 foreach($result as $r){
-                    $rdv = new RendezVous($r['praticienid'],$r['patientid'],$r['specialite'],new \DateTimeImmutable($r['date']));
+                    $rdv = new RendezVous($r['praticienid'],$r['patientid'],$r['specialite'],new \DateTimeImmutable($r['date']), $r['status']);
                     $rdv->setId($r['id']);
                     $retour[] = $rdv;
                 }

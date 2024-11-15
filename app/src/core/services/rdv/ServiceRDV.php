@@ -196,6 +196,7 @@ class ServiceRDV implements ServiceRDVInterface {
         $praticien = $this->servicePraticien->getPraticienById($inputRdv->getPraticienId());
         
         if ($rdvOld->getStatus() != RendezVous::MAINTENU) {
+            echo $rdvOld->getStatus();
             throw new \Exception("Impossible de changer les informations d'un rdv qui n'est pas 'maintenu'");
         }
         

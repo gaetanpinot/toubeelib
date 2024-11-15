@@ -2,6 +2,7 @@
 
 use toubeelib\application\actions\DeleteRdvId;
 use toubeelib\application\actions\GetPatient;
+use toubeelib\application\actions\GetPraticien;
 use toubeelib\application\actions\GetRdvId;
 use toubeelib\application\actions\PatchRdv;
 use toubeelib\application\actions\PostCreateRdv;
@@ -25,6 +26,7 @@ return [
     PostSignIn::class => DI\autowire(),
     SearchPraticien::class => DI\autowire(),
     GetPatient::class => DI\autowire(),
+    GetPraticien::class => DI\autowire(),
 
     
     

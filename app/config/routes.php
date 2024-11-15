@@ -6,6 +6,7 @@ use Slim\Exception\HttpNotFoundException;
 
 
 use toubeelib\application\actions\GetPatient;
+use toubeelib\application\actions\GetPraticien;
 use toubeelib\application\actions\GetRdvByPatient;
 
 use toubeelib\application\actions\PostSignIn;
@@ -49,16 +50,12 @@ return function (\Slim\App $app): \Slim\App {
         ->add(AuthzPatient::class)
         ->add(AuthnMiddleware::class);
 
-    // TODO get patients
     $app->get("/patients/{id}[/]", GetPatient::class)
         ->setName('getPatient')
         ->add(AuthzPatient::class)
         ->add(AuthnMiddleware::class);
 
     //PRATICIENS
-    // TODO get praticiens
-    $app->get("/praticiens/{id:[0-9]+}[/]", function () {
-    })->setName('getPraticien');
 
 
     $app->get('/praticiens/{id}/dispos[/]', \toubeelib\application\actions\GetDisposPraticienDate::class)->setName('disposPraticienDate')
@@ -69,7 +66,12 @@ return function (\Slim\App $app): \Slim\App {
         ->add(AuthzPraticiens::class)
         ->add(AuthnMiddleware::class);
 
-    $app->get('/praticiens/search[/]', SearchPraticien::class)->setName('searchPraticiens');
+    $app->get('/praticiens/search[/]', SearchPraticien::class)->setName('searchPraticiens')
+        ->add(AuthnMiddleware::class);
+
+    $app->get("/praticiens/{id}[/]", GetPraticien::class )->setName('getPraticien')
+        ->add(AuthnMiddleware::class);
+    
 
     $app->post('/signin[/]', PostSignIn::class)->setName('signIn');
 
