@@ -7,6 +7,7 @@ use DateInterval;
 use DateTimeImmutable;
 use Error;
 use Faker\Core\Uuid;
+use PHPUnit\Framework\MockObject\Exception;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 use toubeelib\core\domain\entities\rdv\RendezVous;
 use toubeelib\core\dto\InputRdvDto;
@@ -18,6 +19,8 @@ use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
+use toubeelib\core\services\rdv\ServiceRessourceNotFoundException;
+
 class ServiceRDV implements ServiceRDVInterface {
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticien $servicePraticien;
@@ -39,7 +42,7 @@ class ServiceRDV implements ServiceRDVInterface {
         try {
             $rdv = $this->rdvRepository->getRdvById($id);
         } catch (RepositoryEntityNotFoundException $e) {
-            throw new ServiceRDVInvalidDataException('invalid RDV ID');
+            throw new Exception('invalid RDV ID');
         }
         $praticien = $this->servicePraticien->getPraticienById($rdv->getPraticienId());
         return $rdv->toDTO($praticien);
@@ -160,7 +163,11 @@ class ServiceRDV implements ServiceRDVInterface {
     }
 
     public function getRdvByPatient(string $id) : array {
+        try{
         $listeRDV = $this->rdvRepository->getRdvByPatient($id);
+        }catch(RepositoryEntityNotFoundException $e){
+            throw new ServiceRessourceNotFoundException("Patient $id n'existe pas");
+        }
         return array_map(function(RendezVous $rdv) {
                 return $rdv->toDTO($this->servicePraticien->getPraticienById($rdv->getPraticienId()));
             },

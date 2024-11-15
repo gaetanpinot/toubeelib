@@ -10,6 +10,7 @@ use Slim\Routing\RouteContext;
 use toubeelib\application\actions\AbstractAction;
 use toubeelib\application\renderer\JsonRenderer;
 use toubeelib\core\dto\RdvDTO;
+use toubeelib\core\services\ServiceRessourceNotFoundException;
 use toubeelib\core\services\rdv\ServiceRDVInvalidDataException;
 
 class GetRdvByPatient extends AbstractAction
@@ -33,7 +34,7 @@ class GetRdvByPatient extends AbstractAction
             $rs = JsonRenderer::render($rs, 200, $data);
             $this->loger->info('GetRdvPatient du patient: '.$args['id']);
 
-        } catch (ServiceRDVInvalidDataException $e) {
+        } catch (ServiceRessourceNotFoundException $e) {
             $this->loger->error('GetRdvPatient : '.$args['id'].' : '.$e->getMessage());
             throw new HttpNotFoundException($rq, $e->getMessage());
         }catch (\Exception $e){

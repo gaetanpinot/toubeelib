@@ -7,8 +7,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Routing\RouteContext;
+use toubeelib\core\services\ServiceRessourceNotFoundException;
 use toubeelib\providers\auth\AuthInvalidException;
 use toubeelib\core\services\rdv\AuthorizationRendezVousServiceInterface;
 
@@ -28,17 +30,15 @@ class AuthzRDV implements MiddlewareInterface{
 	{
 		$idRdv = RouteContext::fromRequest($rq)->getRoute()->getArgument('id');
 		$user = $rq->getAttribute('user');
-		// try{
+		try{
 		if( $this->authrdvservice->isGranted($user->id, 1, $idRdv, $user->role)){
 			return $next->handle($rq);
 		}else{
 			throw new HttpUnauthorizedException($rq, "Accès au rdv $idRdv non authorisé");
 		}
-		// }
-		// catch(\Error $e){
-		// 	$this->loger->error($e->getMessage());
-		// 	throw new HttpUnauthorizedException($rq, "Erreur lors de l'authentification veuillez verifier votre token");
-		// }
+		}catch(ServiceRessourceNotFoundException $e){
+			throw new HttpNotFoundException($rq, $e->getMessage());
+		}
 
 
 		$rs = $next->handle($rq);
