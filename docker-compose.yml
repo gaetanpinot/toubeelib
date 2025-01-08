@@ -6,9 +6,10 @@ services:
   # service api.toubeelib : api pour la prise de rdv
   #
   api.toubeelib:
-    build:
-      context: build
-      dockerfile: 8.3-cli.Dockerfile
+    image: canals/php:8.2-cli
+    # build:
+    #   context: build
+    #   dockerfile: 8.3-cli.Dockerfile
     env_file: ./toubeelib.env
     container_name: api_toubeelib
 
